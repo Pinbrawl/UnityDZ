@@ -1,10 +1,8 @@
 using UnityEngine;
 
-public class Rotator : MonoBehaviour
+public class Rotator : AbstractTransformer
 {
-    [SerializeField] private int _speed;
-
-    private void Update()
+    protected override void Transform()
     {
         transform.Rotate(0, _speed * Time.deltaTime, 0);
     }

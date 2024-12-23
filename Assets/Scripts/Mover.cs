@@ -1,10 +1,8 @@
 using UnityEngine;
 
-public class Mover : MonoBehaviour
+public class Mover : AbstractTransformer
 {
-    [SerializeField] private float _speed;
-
-    private void Update()
+    protected override void Transform()
     {
         transform.Translate(_speed * Vector3.forward * Time.deltaTime);
     }
