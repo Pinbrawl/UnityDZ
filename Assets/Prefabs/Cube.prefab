@@ -119,13 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ca5f5655cecd784a9bf47b5929a29bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 7754765443727592062}
-  _minCubesCount: 2
-  _maxCubesCount: 6
-  _chance: 100
-  _material: {fileID: 2100000, guid: 8d27a866c2bc2fa4e9a44ea75116ae2c, type: 2}
-  _rigidbody: {fileID: -6147123378609181500}
-  _force: 10
+  _renderer: {fileID: 8765811134866160370}
+  <Chance>k__BackingField: 100
 --- !u!54 &-6147123378609181500
 Rigidbody:
   m_ObjectHideFlags: 0
