@@ -6,10 +6,10 @@ public class Cube : MonoBehaviour
 {
     [SerializeField] private Renderer _renderer;
 
-    public event Action<Cube> Clicked;
-
     [field:SerializeField] public int Chance {  get; private set; }
     public Rigidbody Rigidbody { get; private set; }
+
+    public event Action<Cube> Clicked;
 
     private void Awake()
     {

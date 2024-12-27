@@ -7,6 +7,8 @@ public class CubeSpawner : MonoBehaviour
     [SerializeField] private int _minCubesCount;
     [SerializeField] private int _maxCubesCount;
     [SerializeField] private List<Cube> _cubes;
+    [SerializeField] private Exploder _exploder;
+    [SerializeField] private int _decrease;
 
     private int _minProcentage;
     private int _maxProcentage;
@@ -33,18 +35,24 @@ public class CubeSpawner : MonoBehaviour
     {
         parentCube.Clicked -= SpawnCubes;
 
-        if(parentCube.Chance >= UnityEngine.Random.Range(_minProcentage, _maxProcentage + 1))
+        if (parentCube.Chance >= UnityEngine.Random.Range(_minProcentage, _maxProcentage + 1))
         {
+            List<Cube> newCubes = new List<Cube>();
+
             int cubesCount = Random.Range(_minCubesCount, _maxCubesCount + 1);
 
             for (int i = 0; i < cubesCount; i++)
             {
                 Cube cube = Instantiate(_prefab, parentCube.transform.position, Quaternion.identity);
-                cube.InitParameters(parentCube.transform.localScale / 2, parentCube.Chance / 2);
+                cube.InitParameters(parentCube.transform.localScale / _decrease, parentCube.Chance / _decrease);
 
                 cube.Clicked += SpawnCubes;
                 _cubes.Add(cube);
+
+                newCubes.Add(cube);
             }
+
+            _exploder.Explode(newCubes);
         }
     }
 }
