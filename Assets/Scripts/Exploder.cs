@@ -12,7 +12,12 @@ public class Exploder : MonoBehaviour
 
         foreach (Cube cube in cubes)
         {
-            Vector3 direction = new Vector3(UnityEngine.Random.Range(minDirection, maxDirection), UnityEngine.Random.Range(minDirection, maxDirection), UnityEngine.Random.Range(minDirection, maxDirection)).normalized;
+            int RandomX = Random.Range(minDirection, maxDirection);
+            int RandomY = Random.Range(minDirection, maxDirection);
+            int RandomZ = Random.Range(minDirection, maxDirection);
+
+            Vector3 direction = new Vector3(RandomX, RandomY, RandomZ).normalized;
+
             cube.Rigidbody.AddForce(direction * _force, ForceMode.Impulse);
         }
     }
