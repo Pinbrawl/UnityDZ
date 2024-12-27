@@ -14,6 +14,7 @@ public class Cube : MonoBehaviour
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
+        this.Rigidbody = GetComponent<Rigidbody>();
 
         ChangeColor();
     }
