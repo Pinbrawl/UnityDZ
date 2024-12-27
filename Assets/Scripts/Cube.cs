@@ -5,19 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Cube : MonoBehaviour
 {
-    [SerializeField] private Renderer _renderer;
-
     public event Action<Cube> Clicked;
 
-    [field:SerializeField] public int Chance {  get; private set; }
+    [field:SerializeField] public int Chance { get; private set; }
+    public Renderer Renderer { get; private set; }
     public Rigidbody Rigidbody { get; private set; }
 
     private void Awake()
     {
-        _renderer = GetComponent<Renderer>();
-        this.Rigidbody = GetComponent<Rigidbody>();
-
-        ChangeColor();
+        Renderer = GetComponent<Renderer>();
+        Rigidbody = GetComponent<Rigidbody>();
     }
 
     private void OnMouseDown()
@@ -31,10 +28,5 @@ public class Cube : MonoBehaviour
     {
         transform.localScale = parentScale;
         Chance = parentChance;
-    }
-
-    private void ChangeColor()
-    {
-        _renderer.material.color = UnityEngine.Random.ColorHSV();
     }
 }

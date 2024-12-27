@@ -8,6 +8,7 @@ public class CubeSpawner : MonoBehaviour
     [SerializeField] private int _maxCubesCount;
     [SerializeField] private List<Cube> _cubes;
     [SerializeField] private Exploder _exploder;
+    [SerializeField] private ColorChanger _colorChanger;
     [SerializeField] private int _decrease;
 
     private int _minProcentage;
@@ -45,6 +46,7 @@ public class CubeSpawner : MonoBehaviour
             {
                 Cube cube = Instantiate(_prefab, parentCube.transform.position, Quaternion.identity);
                 cube.InitParameters(parentCube.transform.localScale / _decrease, parentCube.Chance / _decrease);
+                _colorChanger.ChangeColor(cube.Renderer);
 
                 cube.Clicked += SpawnCubes;
                 _cubes.Add(cube);
