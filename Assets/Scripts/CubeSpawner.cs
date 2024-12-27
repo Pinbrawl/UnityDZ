@@ -20,17 +20,19 @@ public class CubeSpawner : MonoBehaviour
     private void OnEnable()
     {
         foreach (Cube cube in _cubes)
-            cube.ClickedOnCube += SpawnCubes;
+            cube.Clicked += SpawnCubes;
     }
 
     private void OnDisable()
     {
         foreach (Cube cube in _cubes)
-            cube.ClickedOnCube -= SpawnCubes;
+            cube.Clicked -= SpawnCubes;
     }
 
     private void SpawnCubes(Cube parentCube)
     {
+        parentCube.Clicked -= SpawnCubes;
+
         if(parentCube.Chance >= UnityEngine.Random.Range(_minProcentage, _maxProcentage + 1))
         {
             int cubesCount = Random.Range(_minCubesCount, _maxCubesCount + 1);
@@ -38,9 +40,9 @@ public class CubeSpawner : MonoBehaviour
             for (int i = 0; i < cubesCount; i++)
             {
                 Cube cube = Instantiate(_prefab, parentCube.transform.position, Quaternion.identity);
-                cube.SetParameters(parentCube.transform.localScale, parentCube.Chance);
+                cube.InitParameters(parentCube.transform.localScale / 2, parentCube.Chance / 2);
 
-                cube.ClickedOnCube += SpawnCubes;
+                cube.Clicked += SpawnCubes;
                 _cubes.Add(cube);
             }
         }

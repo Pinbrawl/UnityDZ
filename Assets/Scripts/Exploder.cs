@@ -9,6 +9,7 @@ public class Exploder : MonoBehaviour
     {
         int minDirection = 0;
         int maxDirection = 100;
+
         foreach (Cube cube in cubes)
         {
             Vector3 direction = new Vector3(UnityEngine.Random.Range(minDirection, maxDirection), UnityEngine.Random.Range(minDirection, maxDirection), UnityEngine.Random.Range(minDirection, maxDirection)).normalized;
