@@ -6,55 +6,22 @@ public class CubeSpawner : MonoBehaviour
     [SerializeField] private Cube _prefab;
     [SerializeField] private int _minCubesCount;
     [SerializeField] private int _maxCubesCount;
-    [SerializeField] private List<Cube> _cubes;
-    [SerializeField] private Exploder _exploder;
-    [SerializeField] private ColorChanger _colorChanger;
     [SerializeField] private int _decrease;
 
-    private int _minProcentage;
-    private int _maxProcentage;
-
-    private void Awake()
+    public List<Cube> SpawnCubes(Cube parentCube)
     {
-        _minProcentage = 0;
-        _maxProcentage = 100;
-    }
+        List<Cube> newCubes = new List<Cube>();
 
-    private void OnEnable()
-    {
-        foreach (Cube cube in _cubes)
-            cube.Clicked += SpawnCubes;
-    }
+        int cubesCount = Random.Range(_minCubesCount, _maxCubesCount + 1);
 
-    private void OnDisable()
-    {
-        foreach (Cube cube in _cubes)
-            cube.Clicked -= SpawnCubes;
-    }
-
-    private void SpawnCubes(Cube parentCube)
-    {
-        parentCube.Clicked -= SpawnCubes;
-
-        if (parentCube.Chance >= UnityEngine.Random.Range(_minProcentage, _maxProcentage + 1))
+        for (int i = 0; i < cubesCount; i++)
         {
-            List<Cube> newCubes = new List<Cube>();
+            Cube cube = Instantiate(_prefab, parentCube.transform.position, Quaternion.identity);
+            cube.InitParameters(parentCube.transform.localScale / _decrease, parentCube.Chance / _decrease);
 
-            int cubesCount = Random.Range(_minCubesCount, _maxCubesCount + 1);
-
-            for (int i = 0; i < cubesCount; i++)
-            {
-                Cube cube = Instantiate(_prefab, parentCube.transform.position, Quaternion.identity);
-                cube.InitParameters(parentCube.transform.localScale / _decrease, parentCube.Chance / _decrease);
-                _colorChanger.ChangeColor(cube.Renderer);
-
-                cube.Clicked += SpawnCubes;
-                _cubes.Add(cube);
-
-                newCubes.Add(cube);
-            }
-
-            _exploder.Explode(newCubes);
+            newCubes.Add(cube);
         }
+
+        return newCubes;
     }
 }
