@@ -33,17 +33,19 @@ public class ClickProcesser : MonoBehaviour
     {
         cube.Clicked -= ProcessClick;
 
-        List<Cube> newCubes = new List<Cube>();
-
         if (cube.Chance >= Random.Range(_minProcentage, _maxProcentage))
-            newCubes = _cubeSpawner.SpawnCubes(cube);
-
-        foreach(Cube newCube in newCubes)
         {
-            _exploder.Explode(newCube);
-            _colorChanger.ChangeColor(newCube.Renderer);
+            List<Cube> newCubes = _cubeSpawner.SpawnCubes(cube);
 
-            newCube.Clicked += ProcessClick;
+            foreach (Cube newCube in newCubes)
+            {
+                newCube.Clicked += ProcessClick;
+                _colorChanger.ChangeColor(newCube.Renderer);
+            }
+        }
+        else
+        {
+            _exploder.Explode(cube);
         }
     }
 }

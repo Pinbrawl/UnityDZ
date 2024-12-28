@@ -3,18 +3,10 @@ using UnityEngine;
 public class Exploder : MonoBehaviour
 {
     [SerializeField] private int _force;
+    [SerializeField] private int _radius;
 
     public void Explode(Cube cube)
     {
-        int minDirection = 0;
-        int maxDirection = 100;
-
-        int randomX = Random.Range(minDirection, maxDirection + 1);
-        int randomY = Random.Range(minDirection, maxDirection + 1);
-        int randomZ = Random.Range(minDirection, maxDirection + 1);
-
-        Vector3 direction = new Vector3(randomX, randomY, randomZ).normalized;
-
-        cube.Rigidbody.AddForce(direction * _force, ForceMode.Impulse);
+        cube.Rigidbody.AddExplosionForce(_force * cube.ExplodeMultiplier, cube.transform.position, _radius * cube.ExplodeMultiplier);
     }
 }

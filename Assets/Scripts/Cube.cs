@@ -8,6 +8,7 @@ public class Cube : MonoBehaviour
     public event Action<Cube> Clicked;
 
     [field:SerializeField] public int Chance { get; private set; }
+    [field:SerializeField] public int ExplodeMultiplier { get; private set; }
     public Renderer Renderer { get; private set; }
     public Rigidbody Rigidbody { get; private set; }
 
@@ -24,9 +25,10 @@ public class Cube : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void InitParameters(Vector3 parentScale, int parentChance)
+    public void InitParameters(Vector3 parentScale, int parentChance, int parentExplodeMultiplier)
     {
         transform.localScale = parentScale;
         Chance = parentChance;
+        ExplodeMultiplier = parentExplodeMultiplier;
     }
 }

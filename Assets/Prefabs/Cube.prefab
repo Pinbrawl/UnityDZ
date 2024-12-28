@@ -119,8 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ca5f5655cecd784a9bf47b5929a29bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _renderer: {fileID: 8765811134866160370}
   <Chance>k__BackingField: 100
+  <ExplodeMultiplier>k__BackingField: 1
 --- !u!54 &-6147123378609181500
 Rigidbody:
   m_ObjectHideFlags: 0

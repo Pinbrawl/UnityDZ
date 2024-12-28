@@ -17,7 +17,7 @@ public class CubeSpawner : MonoBehaviour
         for (int i = 0; i < cubesCount; i++)
         {
             Cube cube = Instantiate(_prefab, parentCube.transform.position, Quaternion.identity);
-            cube.InitParameters(parentCube.transform.localScale / _decrease, parentCube.Chance / _decrease);
+            cube.InitParameters(parentCube.transform.localScale / _decrease, parentCube.Chance / _decrease, parentCube.ExplodeMultiplier * _decrease);
 
             newCubes.Add(cube);
         }
