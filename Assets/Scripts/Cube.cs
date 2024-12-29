@@ -1,34 +1,31 @@
-using System;
 using UnityEngine;
+using UnityEngine.Pool;
 
-[RequireComponent(typeof(Renderer))]
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Renderer))]
 public class Cube : MonoBehaviour
 {
-    public event Action<Cube> Clicked;
+    public ObjectPool<GameObject> Pool;
 
-    [field:SerializeField] public int Chance { get; private set; }
-    [field:SerializeField] public int ExplodeMultiplier { get; private set; }
-    public Renderer Renderer { get; private set; }
-    public Rigidbody Rigidbody { get; private set; }
+    public bool IsTouch { get; private set; }
 
     private void Awake()
     {
-        Renderer = GetComponent<Renderer>();
-        Rigidbody = GetComponent<Rigidbody>();
+        IsTouch = false;
     }
 
-    private void OnMouseDown()
+    public void Touch()
     {
-        Clicked?.Invoke(this);
-
-        Destroy(gameObject);
+        IsTouch = true;
     }
 
-    public void InitParameters(Vector3 parentScale, int parentChance, int parentExplodeMultiplier)
+    public void Refresh()
     {
-        transform.localScale = parentScale;
-        Chance = parentChance;
-        ExplodeMultiplier = parentExplodeMultiplier;
+        IsTouch = false;
+    }
+
+    public void ReturnInPool()
+    {
+        Pool.Release(gameObject);
     }
 }
