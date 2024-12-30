@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class CubeRemover : MonoBehaviour
 {
-    [SerializeField] private float minDelay;
-    [SerializeField] private float maxDelay;
+    [SerializeField] private float _minDelay;
+    [SerializeField] private float _maxDelay;
 
     public void DelayedDelete(Cube cube)
     {
-        float randomDelay = Random.Range(minDelay, maxDelay);
+        float randomDelay = Random.Range(_minDelay, _maxDelay);
         StartCoroutine(Delay(cube, randomDelay));
     }
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Controller : MonoBehaviour
+public class CubeController : MonoBehaviour
 {
     [SerializeField] private List<Plane> _planes;
     [SerializeField] private ColorChanger _colorChanger;
@@ -24,7 +24,7 @@ public class Controller : MonoBehaviour
         if(cube.IsTouch == false)
         {
             cube.Touch();
-            _colorChanger.ChangeColor(cube.GetComponent<Renderer>());
+            _colorChanger.ChangeColor(cube.Renderer);
             _cubeRemover.DelayedDelete(cube);
         }
     }

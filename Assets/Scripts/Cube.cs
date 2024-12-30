@@ -6,12 +6,13 @@ using UnityEngine.Pool;
 public class Cube : MonoBehaviour
 {
     public ObjectPool<GameObject> Pool;
+    public Renderer Renderer { get; private set; }
 
     public bool IsTouch { get; private set; }
 
     private void Awake()
     {
-        IsTouch = false;
+        Renderer = GetComponent<Renderer>();
     }
 
     public void Touch()

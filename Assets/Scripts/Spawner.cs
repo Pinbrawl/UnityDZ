@@ -3,7 +3,7 @@ using UnityEngine.Pool;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private GameObject _prefab;
+    [SerializeField] private GameObject _cube;
     [SerializeField] private float _repeatRate;
     [SerializeField] private int _poolCapacity;
     [SerializeField] private int _poolMaxSize;
@@ -29,7 +29,7 @@ public class Spawner : MonoBehaviour
 
     private GameObject CreateFunc()
     {
-        Cube cube = Instantiate(_prefab).GetComponent<Cube>();
+        Cube cube = Instantiate(_cube).GetComponent<Cube>();
         cube.Pool = _pool;
 
         return cube.gameObject;
@@ -45,7 +45,7 @@ public class Spawner : MonoBehaviour
 
         obj.transform.position = randomPosition;
         obj.transform.rotation = Quaternion.identity;
-        obj.GetComponent<Renderer>().material.color = _prefab.GetComponent<Renderer>().sharedMaterial.color;
+        obj.GetComponent<Cube>().Renderer.material.color = _cube.GetComponent<Renderer>().sharedMaterial.color;
         obj.GetComponent<Rigidbody>().velocity = Vector3.zero;
         obj.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         obj.GetComponent<Cube>().Refresh();
