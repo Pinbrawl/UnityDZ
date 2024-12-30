@@ -5,14 +5,15 @@ using UnityEngine.Pool;
 [RequireComponent(typeof(Renderer))]
 public class Cube : MonoBehaviour
 {
-    public ObjectPool<GameObject> Pool;
     public Renderer Renderer { get; private set; }
+    public Rigidbody Rigidbody { get; private set; }
 
     public bool IsTouch { get; private set; }
 
     private void Awake()
     {
         Renderer = GetComponent<Renderer>();
+        Rigidbody = GetComponent<Rigidbody>();
     }
 
     public void Touch()
@@ -23,10 +24,5 @@ public class Cube : MonoBehaviour
     public void Refresh()
     {
         IsTouch = false;
-    }
-
-    public void ReturnInPool()
-    {
-        Pool.Release(gameObject);
     }
 }

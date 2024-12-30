@@ -1,22 +1,23 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private GameObject _cube;
+    [SerializeField] private Cube _cube;
     [SerializeField] private float _repeatRate;
     [SerializeField] private int _poolCapacity;
     [SerializeField] private int _poolMaxSize;
 
-    private ObjectPool<GameObject> _pool;
+    public ObjectPool<GameObject> Pool { get; private set; }
 
     private void Awake()
     {
-        _pool = new ObjectPool<GameObject>(
-        createFunc: CreateFunc,
-        actionOnGet: ActionOnGet,
-        actionOnRelease: (obj) => obj.SetActive(false),
-        actionOnDestroy: Destroy,
+        Pool = new ObjectPool<GameObject>(
+        createFunc: () => Instantiate(_cube.gameObject),
+        actionOnGet: DoOnGet,
+        actionOnRelease: (obj) => obj.gameObject.SetActive(false),
+        actionOnDestroy: (obj) => Destroy(obj),
         collectionCheck: true,
         defaultCapacity: _poolCapacity,
         maxSize: _poolMaxSize);
@@ -27,15 +28,7 @@ public class Spawner : MonoBehaviour
         InvokeRepeating(nameof(GetCube), 0.0f, _repeatRate);
     }
 
-    private GameObject CreateFunc()
-    {
-        Cube cube = Instantiate(_cube).GetComponent<Cube>();
-        cube.Pool = _pool;
-
-        return cube.gameObject;
-    }
-
-    private void ActionOnGet(GameObject obj)
+    private void DoOnGet(GameObject obj)
     {
         float randomPositionX = Random.Range(transform.position.x - transform.localScale.x, transform.position.x + transform.localScale.x);
         float randomPositionY = Random.Range(transform.position.y - transform.localScale.y, transform.position.y + transform.localScale.y);
@@ -43,17 +36,19 @@ public class Spawner : MonoBehaviour
 
         Vector3 randomPosition = new Vector3(randomPositionX, randomPositionY, randomPositionZ);
 
-        obj.transform.position = randomPosition;
-        obj.transform.rotation = Quaternion.identity;
-        obj.GetComponent<Cube>().Renderer.material.color = _cube.GetComponent<Renderer>().sharedMaterial.color;
-        obj.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        obj.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-        obj.GetComponent<Cube>().Refresh();
+        Cube cube = obj.GetComponent<Cube>();
+
+        cube.transform.position = randomPosition;
+        cube.transform.rotation = Quaternion.identity;
+        cube.Renderer.material.color = _cube.GetComponent<Renderer>().sharedMaterial.color;
+        cube.Rigidbody.velocity = Vector3.zero;
+        cube.Rigidbody.angularVelocity = Vector3.zero;
+        cube.Refresh();
         obj.SetActive(true);
     }
 
     private void GetCube()
     {
-        _pool.Get();
+        Pool.Get();
     }
 }

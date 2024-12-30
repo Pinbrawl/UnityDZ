@@ -7,7 +7,9 @@ public class Plane : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<Cube>())
-            CubeTouch.Invoke(collision.gameObject.GetComponent<Cube>());
+        Cube cube = collision.gameObject.GetComponent<Cube>();
+
+        if (cube != null)
+            CubeTouch.Invoke(cube);
     }
 }

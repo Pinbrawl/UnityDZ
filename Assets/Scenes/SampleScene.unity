@@ -151,8 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e405b4e086cebd34ca25143c0673ecd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minDelay: 2
-  maxDelay: 5
+  _minDelay: 2
+  _maxDelay: 5
 --- !u!4 &102606741
 Transform:
   m_ObjectHideFlags: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f30e3a1e4d3e7854fb5a4d3262d981e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 8474975959690694762, guid: 4c64a2785abf92340a084c9a1c4e97c3, type: 3}
+  _cube: {fileID: -1425327122170292955, guid: 4c64a2785abf92340a084c9a1c4e97c3, type: 3}
   _repeatRate: 1
   _poolCapacity: 5
   _poolMaxSize: 10
@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 493474133}
   - component: {fileID: 493474132}
   m_Layer: 0
-  m_Name: Controller
+  m_Name: CubeController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -378,6 +378,7 @@ MonoBehaviour:
   - {fileID: 6551082236354208168}
   - {fileID: 1591052913}
   - {fileID: 347652799}
+  _spawner: {fileID: 282205990}
   _colorChanger: {fileID: 347650561}
   _cubeRemover: {fileID: 102606740}
 --- !u!4 &493474133
