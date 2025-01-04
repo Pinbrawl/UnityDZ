@@ -55,4 +55,9 @@ public class Cube : MonoBehaviour
     {
         Renderer.material.color = UnityEngine.Random.ColorHSV();
     }
+
+    public void Init()
+    {
+        Renderer = GetComponent<Renderer>();
+    }
 }

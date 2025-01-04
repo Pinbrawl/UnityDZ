@@ -13,7 +13,7 @@ public class Spawner : MonoBehaviour
     private void Awake()
     {
         Pool = new ObjectPool<Cube>(
-        createFunc: CreateFunc,
+        createFunc: CreateCube,
         actionOnGet: DoOnGet,
         actionOnRelease: (obj) => obj.gameObject.SetActive(false),
         actionOnDestroy: (obj) => Destroy(obj),
@@ -24,10 +24,10 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating(nameof(GetCube), 0.0f, _repeatRate);
+        InvokeRepeating(nameof(SpawnCube), 0.0f, _repeatRate);
     }
 
-    private Cube CreateFunc()
+    private Cube CreateCube()
     {
         Cube cube = Instantiate(_cube);
         cube.Released += ReleaseCube;
@@ -45,14 +45,19 @@ public class Spawner : MonoBehaviour
 
         obj.transform.position = randomPosition;
         obj.transform.rotation = Quaternion.identity;
-        obj.Renderer.material.color = _cube.GetComponent<Renderer>().sharedMaterial.color;
+
+        _cube.Init();
+        obj.Renderer.material.color = _cube.Renderer.sharedMaterial.color;
+        
         obj.Rigidbody.velocity = Vector3.zero;
         obj.Rigidbody.angularVelocity = Vector3.zero;
+
         obj.Refresh();
+
         obj.gameObject.SetActive(true);
     }
 
-    private void GetCube()
+    private void SpawnCube()
     {
         Pool.Get();
     }
