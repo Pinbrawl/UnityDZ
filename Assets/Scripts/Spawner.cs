@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -14,7 +13,7 @@ public class Spawner : MonoBehaviour
     private void Awake()
     {
         Pool = new ObjectPool<GameObject>(
-        createFunc: () => Instantiate(_cube.gameObject),
+        createFunc: CreateFunc,
         actionOnGet: DoOnGet,
         actionOnRelease: (obj) => obj.gameObject.SetActive(false),
         actionOnDestroy: (obj) => Destroy(obj),
@@ -26,6 +25,14 @@ public class Spawner : MonoBehaviour
     private void Start()
     {
         InvokeRepeating(nameof(GetCube), 0.0f, _repeatRate);
+    }
+
+    private GameObject CreateFunc()
+    {
+        Cube cube = Instantiate(_cube);
+        cube.ReleaseMe += ReleaseCube;
+
+        return cube.gameObject;
     }
 
     private void DoOnGet(GameObject obj)
@@ -50,5 +57,18 @@ public class Spawner : MonoBehaviour
     private void GetCube()
     {
         Pool.Get();
+    }
+
+    private void DoOnDestroy(GameObject obj)
+    {
+        Cube cube = obj.GetComponent<Cube>();
+        cube.ReleaseMe -= ReleaseCube;
+
+        Destroy(obj);
+    }
+
+    private void ReleaseCube(GameObject obj)
+    {
+        Pool.Release(obj);
     }
 }

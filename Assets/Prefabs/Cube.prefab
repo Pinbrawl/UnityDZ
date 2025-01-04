@@ -119,6 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ca5f5655cecd784a9bf47b5929a29bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _minDelayDelete: 2
+  _maxDelayDelete: 5
 --- !u!54 &1372246298884777810
 Rigidbody:
   m_ObjectHideFlags: 0
