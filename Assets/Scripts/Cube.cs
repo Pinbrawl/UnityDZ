@@ -9,7 +9,7 @@ public class Cube : MonoBehaviour
     [SerializeField] private float _minDelayDelete;
     [SerializeField] private float _maxDelayDelete;
 
-    public event Action<GameObject> ReleaseMe;
+    public event Action<Cube> Released;
 
     public Renderer Renderer { get; private set; }
     public Rigidbody Rigidbody { get; private set; }
@@ -29,7 +29,7 @@ public class Cube : MonoBehaviour
         {
             IsTouch = true;
             ChangeColor();
-            DelayedDelete();
+            DelayedRelease();
         }
     }
 
@@ -38,17 +38,17 @@ public class Cube : MonoBehaviour
         IsTouch = false;
     }
 
-    private void DelayedDelete()
+    private void DelayedRelease()
     {
         float randomDelay = UnityEngine.Random.Range(_minDelayDelete, _maxDelayDelete);
-        StartCoroutine(Delay(randomDelay));
+        StartCoroutine(Wait(randomDelay));
     }
 
-    private IEnumerator Delay(float delay)
+    private IEnumerator Wait(float delay)
     {
         yield return new WaitForSeconds(delay);
 
-        ReleaseMe?.Invoke(gameObject);
+        Released?.Invoke(this);
     }
 
     private void ChangeColor()

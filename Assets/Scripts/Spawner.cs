@@ -8,11 +8,11 @@ public class Spawner : MonoBehaviour
     [SerializeField] private int _poolCapacity;
     [SerializeField] private int _poolMaxSize;
 
-    public ObjectPool<GameObject> Pool { get; private set; }
+    public ObjectPool<Cube> Pool { get; private set; }
 
     private void Awake()
     {
-        Pool = new ObjectPool<GameObject>(
+        Pool = new ObjectPool<Cube>(
         createFunc: CreateFunc,
         actionOnGet: DoOnGet,
         actionOnRelease: (obj) => obj.gameObject.SetActive(false),
@@ -27,15 +27,15 @@ public class Spawner : MonoBehaviour
         InvokeRepeating(nameof(GetCube), 0.0f, _repeatRate);
     }
 
-    private GameObject CreateFunc()
+    private Cube CreateFunc()
     {
         Cube cube = Instantiate(_cube);
-        cube.ReleaseMe += ReleaseCube;
+        cube.Released += ReleaseCube;
 
-        return cube.gameObject;
+        return cube;
     }
 
-    private void DoOnGet(GameObject obj)
+    private void DoOnGet(Cube obj)
     {
         float randomPositionX = Random.Range(transform.position.x - transform.localScale.x, transform.position.x + transform.localScale.x);
         float randomPositionY = Random.Range(transform.position.y - transform.localScale.y, transform.position.y + transform.localScale.y);
@@ -43,15 +43,13 @@ public class Spawner : MonoBehaviour
 
         Vector3 randomPosition = new Vector3(randomPositionX, randomPositionY, randomPositionZ);
 
-        Cube cube = obj.GetComponent<Cube>();
-
-        cube.transform.position = randomPosition;
-        cube.transform.rotation = Quaternion.identity;
-        cube.Renderer.material.color = _cube.GetComponent<Renderer>().sharedMaterial.color;
-        cube.Rigidbody.velocity = Vector3.zero;
-        cube.Rigidbody.angularVelocity = Vector3.zero;
-        cube.Refresh();
-        obj.SetActive(true);
+        obj.transform.position = randomPosition;
+        obj.transform.rotation = Quaternion.identity;
+        obj.Renderer.material.color = _cube.GetComponent<Renderer>().sharedMaterial.color;
+        obj.Rigidbody.velocity = Vector3.zero;
+        obj.Rigidbody.angularVelocity = Vector3.zero;
+        obj.Refresh();
+        obj.gameObject.SetActive(true);
     }
 
     private void GetCube()
@@ -62,12 +60,12 @@ public class Spawner : MonoBehaviour
     private void DoOnDestroy(GameObject obj)
     {
         Cube cube = obj.GetComponent<Cube>();
-        cube.ReleaseMe -= ReleaseCube;
+        cube.Released -= ReleaseCube;
 
         Destroy(obj);
     }
 
-    private void ReleaseCube(GameObject obj)
+    private void ReleaseCube(Cube obj)
     {
         Pool.Release(obj);
     }
