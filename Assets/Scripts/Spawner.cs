@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Spawner : MonoBehaviour
 {
@@ -17,21 +18,25 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator DelayedSpawnRepeating()
     {
-        while(_isActive)
+        var time = new WaitForSeconds(_step);
+
+        while (_isActive)
         {
-            yield return new WaitForSecondsRealtime(_step);
+            yield return time;
             Spawn();
         }
     }
 
     private void Spawn()
     {
-        int minRotate = 0;
-        int maxRotate = 360;
+        float minCoordinate = -10;
+        float maxCoordinate = 10;
+
+        Vector3 direction = new Vector3(Random.Range(minCoordinate, maxCoordinate), 0, Random.Range(minCoordinate, maxCoordinate)).normalized;
 
         int randomSpawnPointIndex = Random.Range(0, _spawnPoints.Count);
-        Quaternion rotate = Quaternion.Euler(0, Random.Range(minRotate, maxRotate), 0);
 
-        Instantiate(_enemy, _spawnPoints[randomSpawnPointIndex].transform.position, rotate);
+        Enemy enemy = Instantiate(_enemy, _spawnPoints[randomSpawnPointIndex].transform.position, Quaternion.identity);
+        enemy.Direction = direction;
     }
 }
