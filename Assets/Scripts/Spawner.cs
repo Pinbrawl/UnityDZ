@@ -35,6 +35,6 @@ public class Spawner : MonoBehaviour
         int randomSpawnPointIndex = Random.Range(0, _spawnPoints.Count);
 
         Enemy enemy = Instantiate(_enemy, _spawnPoints[randomSpawnPointIndex].transform.position, Quaternion.identity);
-        enemy.Direction = direction;
+        enemy.InitDirection(direction);
     }
 }

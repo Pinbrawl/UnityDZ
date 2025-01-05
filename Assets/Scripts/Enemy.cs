@@ -4,10 +4,15 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private int _speed;
 
-    public Vector3 Direction;
+    private Vector3 _direction;
 
     private void Update()
     {
-        transform.Translate(Direction * _speed * Time.deltaTime);
+        transform.Translate(_direction * _speed * Time.deltaTime);
+    }
+
+    public void InitDirection(Vector3 direction)
+    {
+        _direction = direction;
     }
 }
