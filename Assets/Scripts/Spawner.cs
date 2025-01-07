@@ -5,9 +5,8 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private int _step;
-    [SerializeField] private Enemy _enemy;
-    [SerializeField] private List<GameObject> _spawnPoints;
     [SerializeField] private bool _isActive;
+    [SerializeField] private List<SpawnPoint> _spawnPoints;
 
     private void Awake()
     {
@@ -27,14 +26,7 @@ public class Spawner : MonoBehaviour
 
     private void Spawn()
     {
-        float minCoordinate = -10;
-        float maxCoordinate = 10;
-
-        Vector3 direction = new Vector3(Random.Range(minCoordinate, maxCoordinate), 0, Random.Range(minCoordinate, maxCoordinate)).normalized;
-
         int randomSpawnPointIndex = Random.Range(0, _spawnPoints.Count);
-
-        Enemy enemy = Instantiate(_enemy, _spawnPoints[randomSpawnPointIndex].transform.position, Quaternion.identity);
-        enemy.InitDirection(direction);
+        _spawnPoints[randomSpawnPointIndex].Spawn();
     }
 }
