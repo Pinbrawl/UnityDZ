@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private int _speed;
+    [SerializeField] protected int _speed;
 
-    private Vector3 _endPoint;
+    protected Vector3 _endPoint;
 
     private void Update()
     {
