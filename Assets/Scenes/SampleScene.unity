@@ -1207,7 +1207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedTurn: 0.05
-  _secondsStepForTurn: 0
+  _secondsStepForTurn: 0.1
   _maxVolume: 1
   _minVolume: 0
   _detector: {fileID: 516700383}

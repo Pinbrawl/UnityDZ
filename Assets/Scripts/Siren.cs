@@ -16,6 +16,7 @@ public class Siren : MonoBehaviour
 
     private void Awake()
     {
+        _sound.volume = _minVolume;
         _objectsInHouse = 0;
     }
 
@@ -37,7 +38,8 @@ public class Siren : MonoBehaviour
 
         if(_objectsInHouse == 1)
         {
-            StopCoroutine(_coroutine);
+            if (_coroutine != null)
+                StopCoroutine(_coroutine);
             _coroutine = StartCoroutine(ChangeVolume(_maxVolume));
         }
     }
@@ -48,7 +50,8 @@ public class Siren : MonoBehaviour
 
         if(_objectsInHouse == 0)
         {
-            StopCoroutine(_coroutine);
+            if (_coroutine != null)
+                StopCoroutine(_coroutine);
             _coroutine = StartCoroutine(ChangeVolume(_minVolume));
         }
     }
