@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -63,18 +62,11 @@ public class Siren : MonoBehaviour
         if(targetVolume > _sound.volume)
             _sound.Play();
 
-        while (targetVolume > _sound.volume)
+        while (targetVolume != _sound.volume)
         {
             yield return time;
 
-            _sound.volume = Math.Min(targetVolume, _sound.volume + _speedTurn);
-        }
-
-        while (targetVolume < _sound.volume)
-        {
-            yield return time;
-
-            _sound.volume = Math.Max(targetVolume, _sound.volume - _speedTurn);
+            _sound.volume = Mathf.MoveTowards(_sound.volume, targetVolume, _speedTurn);
         }
 
         if (_sound.volume == 0)
