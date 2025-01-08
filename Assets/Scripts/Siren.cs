@@ -1,71 +1,80 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Siren : MonoBehaviour
 {
     [SerializeField] private float _speedTurn;
-    [SerializeField] private float _secondsStep;
+    [SerializeField] private float _secondsStepForTurn;
     [SerializeField] private float _maxVolume;
     [SerializeField] private float _minVolume;
-    [SerializeField] private List<Detectorator> _detectorator;
+    [SerializeField] private Detector _detector;
     [SerializeField] private AudioSource _sound;
 
-    private bool _isPlaying;
+    private int _objectsInHouse;
+    private Coroutine _coroutine;
 
     private void Awake()
     {
-        _isPlaying = false;
+        _objectsInHouse = 0;
     }
 
     private void OnEnable()
     {
-        foreach (Detectorator detectorator in _detectorator)
-            detectorator.Detection += SwitchSiren;
+        _detector.ObjectEnter += CheckWhenEnter;
+        _detector.ObjectExit += CheckWhenExit;
     }
 
     private void OnDisable()
     {
-        foreach (Detectorator detectorator in _detectorator)
-            detectorator.Detection -= SwitchSiren;
+        _detector.ObjectEnter -= CheckWhenEnter;
+        _detector.ObjectExit -= CheckWhenExit;
     }
 
-    private void SwitchSiren()
+    private void CheckWhenEnter()
     {
-        _isPlaying = !_isPlaying;
+        _objectsInHouse++;
 
-        if (_isPlaying)
-            StartCoroutine(TurnUpVolume());
-        else
-            StartCoroutine(TurnDownVolume());
+        if(_objectsInHouse == 1)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = StartCoroutine(ChangeVolume(_maxVolume));
+        }
     }
 
-    private IEnumerator TurnUpVolume()
+    private void CheckWhenExit()
     {
-        var time = new WaitForSeconds(_secondsStep);
+        _objectsInHouse--;
 
-        while(_sound.volume < _maxVolume)
+        if(_objectsInHouse == 0)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = StartCoroutine(ChangeVolume(_minVolume));
+        }
+    }
+
+    private IEnumerator ChangeVolume(float targetVolume)
+    {
+        var time = new WaitForSeconds(_secondsStepForTurn);
+        
+        if(targetVolume > _sound.volume)
+            _sound.Play();
+
+        while (targetVolume > _sound.volume)
         {
             yield return time;
 
-            _sound.volume = Math.Min(_maxVolume, _sound.volume + _speedTurn);
+            _sound.volume = Math.Min(targetVolume, _sound.volume + _speedTurn);
         }
 
-        yield break;
-    }
-
-    private IEnumerator TurnDownVolume()
-    {
-        var time = new WaitForSeconds(_secondsStep);
-
-        while (_sound.volume > _minVolume)
+        while (targetVolume < _sound.volume)
         {
             yield return time;
 
-            _sound.volume = Math.Max(_minVolume, _sound.volume - _speedTurn);
+            _sound.volume = Math.Max(targetVolume, _sound.volume - _speedTurn);
         }
 
-        yield break;
+        if (_sound.volume == 0)
+            _sound.Stop();
     }
 }
