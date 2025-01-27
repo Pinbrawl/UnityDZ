@@ -11,15 +11,13 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _secondsForRelax;
     [SerializeField] private List<Transform> _wayPoints;
 
-    private string _runParameterName;
+    private const string _runParameterName = "Run";
 
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
 
     private void Awake()
     {
-        _runParameterName = "Run";
-
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -82,8 +80,8 @@ public class Enemy : MonoBehaviour
     private void Flip(Transform point)
     {
         if (point.position.x > transform.position.x)
-            _spriteRenderer.flipX = false;
+            transform.rotation = Quaternion.Euler(transform.rotation.x, 0, transform.rotation.z);
         else if (point.position.x < transform.position.x)
-            _spriteRenderer.flipX = true;
+            transform.rotation = Quaternion.Euler(transform.rotation.x, 180, transform.rotation.z);
     }
 }

@@ -5,7 +5,6 @@ public class CoinSpawner : MonoBehaviour
 {
     [SerializeField] private Coin _coin;
     [SerializeField] private List<Transform> _spawnPoints;
-    [SerializeField] private Wallet _wallet;
 
     private void Awake()
     {
@@ -16,12 +15,12 @@ public class CoinSpawner : MonoBehaviour
     {
         Transform randomPoint = _spawnPoints[Random.Range(0, _spawnPoints.Count)];
         Coin coin = Instantiate(_coin, randomPoint);
-        coin.PickUped += CoinPickUped;
+        coin.Removed += CoinPickUped;
     }
 
     private void CoinPickUped(Coin coin)
     {
-        _wallet.AddCoin();
+        coin.Removed -= CoinPickUped;
         SpawnCoin();
     }
 }

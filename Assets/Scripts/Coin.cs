@@ -1,23 +1,13 @@
 using System;
-using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(CircleCollider2D))]
-public class Coin : MonoBehaviour
+public class Coin : Item
 {
-    [SerializeField] private CollectEffect _collectEffect;
+    public event Action<Coin> Removed;
 
-    public event Action<Coin> PickUped;
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    public override void Remove()
     {
-        Player player = collision.gameObject.GetComponent<Player>();
-
-        if(player != null)
-        {
-            PickUped?.Invoke(this);
-            Instantiate(_collectEffect, transform.position, Quaternion.identity);
-            Destroy(gameObject);
-        }
+        Removed?.Invoke(this);
+        
+        base.Remove();
     }
 }

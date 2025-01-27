@@ -21,9 +21,9 @@ public class Player : MonoBehaviour
     private float _speedNow;
     private string _horizontal = "Horizontal";
     private string _platformLayer;
-    private string _onGroundParameterName;
-    private string _speedXParameterName;
-    private string _speedYParameterName;
+    private const string _onGroundParameterName = "OnGround";
+    private const string _speedXParameterName = "SpeedX";
+    private const string _speedYParameterName = "SpeedY";
     private bool _onGround;
     private bool _isImmortality;
 
@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
     private KeyCode _jumpKey;
+    private Coroutine _coroutine;
 
     public event Action<int> HealthChanged;
 
@@ -39,9 +40,6 @@ public class Player : MonoBehaviour
         transform.position = _spawnPoint.position;
 
         _raycastLength = 1.1f;
-        _onGroundParameterName = "OnGround";
-        _speedXParameterName = "SpeedX";
-        _speedYParameterName = "SpeedY";
         _platformLayer = "Platform";
         _isImmortality = false;
 
@@ -67,12 +65,15 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage, Transform point = null, bool ignoreImmortality = false)
     {
-        if(_isImmortality == false)
+        if(_isImmortality == false || ignoreImmortality == true)
         {
             _health = Math.Max(0, _health - damage);
-
             HealthChanged?.Invoke(_health);
-            StartCoroutine(DoImmortality());
+
+            if (_coroutine != null)
+                StopCoroutine(_coroutine);
+
+            _coroutine = StartCoroutine(DoImmortality());
 
             if(point != null)
                 Drop(point);
@@ -132,7 +133,7 @@ public class Player : MonoBehaviour
     private void Run()
     {
         _speedNow = _speed * Input.GetAxis(_horizontal);
-        transform.Translate(Vector2.right * _speedNow * Time.deltaTime);
+        transform.Translate(transform.right * (_speedNow * Time.deltaTime));
     }
 
     private void Jump()
@@ -142,10 +143,10 @@ public class Player : MonoBehaviour
 
     private void Flip()
     {
-        if(_speedNow > _flipBorder)
-            _spriteRenderer.flipX = false;
-        else if(_speedNow < -_flipBorder)
-            _spriteRenderer.flipX = true;
+        if (_speedNow > _flipBorder)
+            transform.rotation = Quaternion.Euler(transform.rotation.x, 0, transform.rotation.z);
+        else if (_speedNow < _flipBorder)
+            transform.rotation = Quaternion.Euler(transform.rotation.x, 180, transform.rotation.z);
     }
 
     private void Death()
@@ -156,4 +157,9 @@ public class Player : MonoBehaviour
 
         HealthChanged?.Invoke(_health);
     }
+
+    //private KeyCode InputReader()
+    //{
+    //    //return ;
+    //}
 }

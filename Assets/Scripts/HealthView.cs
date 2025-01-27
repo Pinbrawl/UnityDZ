@@ -1,10 +1,10 @@
 using TMPro;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class HealthView : MonoBehaviour
 {
-    [SerializeField] private string _baseString;
-    [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private string _baseStringForHealthPrint;
+    [SerializeField] private TextMeshProUGUI _textForHealthCount;
     [SerializeField] private Player _player;
 
     private void OnEnable()
@@ -19,6 +19,6 @@ public class Health : MonoBehaviour
 
     private void PrintHealth(int health)
     {
-        _text.text = _baseString + " " + health;
+        _textForHealthCount.text = _baseStringForHealthPrint + " " + health;
     }
 }

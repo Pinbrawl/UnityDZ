@@ -5,6 +5,7 @@ public class Wallet : MonoBehaviour
 {
     [SerializeField] private string _baseString;
     [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private ItemPickUper _itemPickUper;
 
     private int _coins;
 
@@ -13,6 +14,16 @@ public class Wallet : MonoBehaviour
         _coins = 0;
 
         PrintCoins();
+    }
+
+    private void OnEnable()
+    {
+        _itemPickUper.PickUpCoin += AddCoin;
+    }
+
+    private void OnDisable()
+    {
+        _itemPickUper.PickUpCoin -= AddCoin;
     }
 
     public void AddCoin()
