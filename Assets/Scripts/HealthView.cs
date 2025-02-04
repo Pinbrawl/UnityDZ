@@ -9,15 +9,15 @@ public class HealthView : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.HealthChanged += PrintHealth;
+        _player.HealthChanged += Print;
     }
 
     private void OnDisable()
     {
-        _player.HealthChanged -= PrintHealth;
+        _player.HealthChanged -= Print;
     }
 
-    private void PrintHealth(int health)
+    private void Print(int health)
     {
         _textForHealthCount.text = _baseStringForHealthPrint + " " + health;
     }

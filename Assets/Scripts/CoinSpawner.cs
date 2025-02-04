@@ -8,10 +8,10 @@ public class CoinSpawner : MonoBehaviour
 
     private void Awake()
     {
-        SpawnCoin();
+        Spawn();
     }
 
-    private void SpawnCoin()
+    private void Spawn()
     {
         Transform randomPoint = _spawnPoints[Random.Range(0, _spawnPoints.Count)];
         Coin coin = Instantiate(_coin, randomPoint);
@@ -21,6 +21,6 @@ public class CoinSpawner : MonoBehaviour
     private void CoinPickUped(Coin coin)
     {
         coin.Removed -= CoinPickUped;
-        SpawnCoin();
+        Spawn();
     }
 }

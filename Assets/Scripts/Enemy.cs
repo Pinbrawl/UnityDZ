@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,16 +12,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _secondsForRelax;
     [SerializeField] private List<Transform> _wayPoints;
 
-    private const string _runParameterName = "Run";
-
-    private Animator _animator;
-    private SpriteRenderer _spriteRenderer;
-
-    private void Awake()
-    {
-        _animator = GetComponent<Animator>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-    }
+    public event Action Running;
+    public event Action Stopping;
 
     private void Start()
     {
@@ -29,9 +22,9 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        Player player = collision.gameObject.GetComponent<Player>();
+        Player player;
 
-        if (player != null)
+        if (collision.gameObject.TryGetComponent<Player>(out player))
             player.TakeDamage(_damage, transform);
     }
 
@@ -58,7 +51,7 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator GoToPoint(Transform point)
     {
-        _animator.SetBool(_runParameterName, true);
+        Running?.Invoke();
 
         Flip(point);
 
@@ -74,7 +67,7 @@ public class Enemy : MonoBehaviour
             yield return null;
         }
 
-        _animator.SetBool(_runParameterName, false);
+        Stopping?.Invoke();
     }
 
     private void Flip(Transform point)

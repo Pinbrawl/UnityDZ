@@ -8,6 +8,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private Transform _spawnPoint;
+    [SerializeField] private OnGroundChecker _onGroundChecker;
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
     [SerializeField] private int _maxHealth;
@@ -17,49 +18,54 @@ public class Player : MonoBehaviour
     [SerializeField] private float _secondsImmortality;
     [SerializeField] private float _secondsForBlinking;
 
-    private float _raycastLength;
     private float _speedNow;
     private string _horizontal = "Horizontal";
-    private string _platformLayer;
-    private const string _onGroundParameterName = "OnGround";
-    private const string _speedXParameterName = "SpeedX";
-    private const string _speedYParameterName = "SpeedY";
     private bool _onGround;
     private bool _isImmortality;
 
     private Rigidbody2D _rigidbody2D;
-    private Animator _animator;
     private SpriteRenderer _spriteRenderer;
     private KeyCode _jumpKey;
     private Coroutine _coroutine;
 
     public event Action<int> HealthChanged;
+    public event Action Running;
+    public event Action Stopping;
+    public event Action<bool> OnGroundChanged;
+    public event Action<float> SpeedYChanged;
 
     private void Awake()
     {
         transform.position = _spawnPoint.position;
 
-        _raycastLength = 1.1f;
-        _platformLayer = "Platform";
+        _onGround = false;
         _isImmortality = false;
 
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _jumpKey = KeyCode.Space;
 
         HealthChanged?.Invoke(_health);
     }
 
+    private void OnEnable()
+    {
+        _onGroundChecker.OnGroundChanged += OnGroundChange;
+    }
+
+    private void OnDisable()
+    {
+        _onGroundChecker.OnGroundChanged -= OnGroundChange;
+    }
+
     private void Update()
     {
         Run();
-        _onGround = OnGround();
 
         if (Input.GetKeyDown(_jumpKey) && _onGround)
             Jump();
 
-        ChangeAnimatorsParameters();
+        ChangeAnimatorParameters();
         Flip();
     }
 
@@ -116,18 +122,20 @@ public class Player : MonoBehaviour
         _rigidbody2D.velocity = (transform.position - point.position).normalized * _dropStrength;
     }
 
-    private void ChangeAnimatorsParameters()
+    private void ChangeAnimatorParameters()
     {
-        _animator.SetBool(_onGroundParameterName, _onGround);
-        _animator.SetFloat(_speedXParameterName, Math.Abs(_speedNow));
-        _animator.SetFloat(_speedYParameterName, _rigidbody2D.velocity.y);
+        if (_speedNow != 0)
+            Running?.Invoke();
+        else
+            Stopping?.Invoke();
+
+        SpeedYChanged?.Invoke(_rigidbody2D.velocity.y);
     }
 
-    private bool OnGround()
+    private void OnGroundChange(bool onGround)
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, _raycastLength, LayerMask.GetMask(_platformLayer));
-
-        return hit;
+        _onGround = onGround;
+        OnGroundChanged?.Invoke(_onGround);
     }
 
     private void Run()
@@ -157,9 +165,4 @@ public class Player : MonoBehaviour
 
         HealthChanged?.Invoke(_health);
     }
-
-    //private KeyCode InputReader()
-    //{
-    //    //return ;
-    //}
 }
