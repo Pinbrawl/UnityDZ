@@ -2234,7 +2234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseStringForHealthPrint: 'health:'
   _textForHealthCount: {fileID: 1678665088}
-  _player: {fileID: 967716314}
+  _health: {fileID: 967716318}
 --- !u!4 &553257207
 Transform:
   m_ObjectHideFlags: 0
@@ -2773,6 +2773,8 @@ GameObject:
   - component: {fileID: 967716314}
   - component: {fileID: 967716316}
   - component: {fileID: 967716317}
+  - component: {fileID: 967716318}
+  - component: {fileID: 967716319}
   - component: {fileID: 967716315}
   m_Layer: 0
   m_Name: Player
@@ -2927,8 +2929,6 @@ MonoBehaviour:
   _onGroundChecker: {fileID: 476317636}
   _speed: 10
   _jumpForce: 15
-  _maxHealth: 10
-  _health: 10
   _flipBorder: 0
   _dropStrength: 10
   _secondsImmortality: 1
@@ -2976,6 +2976,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ca4340347f310b4c9957001cf1b7478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &967716318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967716309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a035b4725f11704a9b5651b368596d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 10
+  _health: 10
+  IsImmortality: 0
+--- !u!114 &967716319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967716309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1680c7620b41d404696d80fb86609f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1004371992

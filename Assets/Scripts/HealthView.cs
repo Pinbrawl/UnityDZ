@@ -5,16 +5,16 @@ public class HealthView : MonoBehaviour
 {
     [SerializeField] private string _baseStringForHealthPrint;
     [SerializeField] private TextMeshProUGUI _textForHealthCount;
-    [SerializeField] private Player _player;
+    [SerializeField] private Health _health;
 
     private void OnEnable()
     {
-        _player.HealthChanged += Print;
+        _health.HealthChanged += Print;
     }
 
     private void OnDisable()
     {
-        _player.HealthChanged -= Print;
+        _health.HealthChanged -= Print;
     }
 
     private void Print(int health)

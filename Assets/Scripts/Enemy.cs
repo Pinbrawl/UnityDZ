@@ -22,10 +22,10 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        Player player;
+        Health health;
 
-        if (collision.gameObject.TryGetComponent<Player>(out player))
-            player.TakeDamage(_damage, transform);
+        if (collision.gameObject.TryGetComponent<Health>(out health))
+            health.TakeDamage(_damage, transform);
     }
 
     private IEnumerator SetWay()

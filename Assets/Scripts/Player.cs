@@ -11,24 +11,20 @@ public class Player : MonoBehaviour
     [SerializeField] private OnGroundChecker _onGroundChecker;
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
-    [SerializeField] private int _maxHealth;
-    [SerializeField] private int _health;
     [SerializeField] private float _flipBorder;
     [SerializeField] private float _dropStrength;
     [SerializeField] private float _secondsImmortality;
     [SerializeField] private float _secondsForBlinking;
 
     private float _speedNow;
-    private string _horizontal = "Horizontal";
     private bool _onGround;
-    private bool _isImmortality;
 
     private Rigidbody2D _rigidbody2D;
     private SpriteRenderer _spriteRenderer;
-    private KeyCode _jumpKey;
     private Coroutine _coroutine;
+    private InputReader _inputReader;
+    private Health _health;
 
-    public event Action<int> HealthChanged;
     public event Action Running;
     public event Action Stopping;
     public event Action<bool> OnGroundChanged;
@@ -39,67 +35,63 @@ public class Player : MonoBehaviour
         transform.position = _spawnPoint.position;
 
         _onGround = false;
-        _isImmortality = false;
 
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _jumpKey = KeyCode.Space;
-
-        HealthChanged?.Invoke(_health);
+        _inputReader = GetComponent<InputReader>();
+        _health = GetComponent<Health>();
     }
 
     private void OnEnable()
     {
         _onGroundChecker.OnGroundChanged += OnGroundChange;
+        _health.DamageTaked += TakeDamage;
+        _health.Dead += Death;
     }
 
     private void OnDisable()
     {
         _onGroundChecker.OnGroundChanged -= OnGroundChange;
+        _health.DamageTaked -= TakeDamage;
+        _health.Dead -= Death;
+    }
+
+    private void FixedUpdate()
+    {
+        Run();
+
+        if (_inputReader.GetIsJump() && _onGround)
+            Jump();
     }
 
     private void Update()
     {
-        Run();
-
-        if (Input.GetKeyDown(_jumpKey) && _onGround)
-            Jump();
-
         ChangeAnimatorParameters();
         Flip();
     }
 
-    public void TakeDamage(int damage, Transform point = null, bool ignoreImmortality = false)
+    public void TakeDamage(Transform point)
     {
-        if(_isImmortality == false || ignoreImmortality == true)
-        {
-            _health = Math.Max(0, _health - damage);
-            HealthChanged?.Invoke(_health);
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
 
-            if (_coroutine != null)
-                StopCoroutine(_coroutine);
+        _coroutine = StartCoroutine(DoImmortality());
 
-            _coroutine = StartCoroutine(DoImmortality());
-
-            if(point != null)
-                Drop(point);
-
-            if (_health == 0)
-                Death();
-        }
+        if (point != null)
+            Drop(point);
     }
 
     private IEnumerator DoImmortality()
     {
         var blinkingTime = new WaitForSeconds(_secondsForBlinking);
         float timeImmortality = _secondsImmortality;
-        _isImmortality = true;
+        _health.IsImmortality = true;
 
-        while(timeImmortality > 0)
+        while (timeImmortality > 0)
         {
             _spriteRenderer.enabled = !_spriteRenderer.enabled;
 
-            if(timeImmortality <= _secondsForBlinking)
+            if (timeImmortality <= _secondsForBlinking)
             {
                 yield return new WaitForSeconds(timeImmortality);
 
@@ -113,7 +105,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        _isImmortality = false;
+        _health.IsImmortality = false;
         _spriteRenderer.enabled = true;
     }
 
@@ -140,7 +132,7 @@ public class Player : MonoBehaviour
 
     private void Run()
     {
-        _speedNow = _speed * Input.GetAxis(_horizontal);
+        _speedNow = _speed * _inputReader.Direction;
         transform.Translate(transform.right * (_speedNow * Time.deltaTime));
     }
 
@@ -161,8 +153,5 @@ public class Player : MonoBehaviour
     {
         _rigidbody2D.velocity = Vector2.zero;
         transform.position = _spawnPoint.position;
-        _health = _maxHealth;
-
-        HealthChanged?.Invoke(_health);
     }
 }
