@@ -2991,8 +2991,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a035b4725f11704a9b5651b368596d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
-  _health: 10
+  _maxCount: 10
+  _count: 10
   IsImmortality: 0
 --- !u!114 &967716319
 MonoBehaviour:
@@ -3030,7 +3030,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e653f15f29a31b64982a60f2e1d9a5e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemPickUper: {fileID: 0}
 --- !u!1 &1004371992
 GameObject:
   m_ObjectHideFlags: 0

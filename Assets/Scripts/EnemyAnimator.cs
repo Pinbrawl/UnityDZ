@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class EnemyAnimator : MonoBehaviour
 {
-    private readonly int Run = Animator.StringToHash("Run");
+    private readonly int _run = Animator.StringToHash("Run");
 
     private Enemy _enemy;
     private Animator _animator;
@@ -28,11 +28,11 @@ public class EnemyAnimator : MonoBehaviour
 
     private void RunAnimationStart()
     {
-        _animator.SetBool(Run, true);
+        _animator.SetBool(_run, true);
     }
 
     private void RunAnimationStop()
     {
-        _animator.SetBool(Run, false);
+        _animator.SetBool(_run, false);
     }
 }

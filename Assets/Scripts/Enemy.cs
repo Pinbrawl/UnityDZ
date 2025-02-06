@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(NextWay());
+        StartCoroutine(GetNextWay());
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
             health.TakeDamage(_damage, transform);
     }
 
-    private IEnumerator NextWay()
+    private IEnumerator GetNextWay()
     {
         var relaxTime = new WaitForSeconds(_secondsForRelax);
         int pointIndex = 0;

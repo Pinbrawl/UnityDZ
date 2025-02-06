@@ -4,9 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(Player))]
 public class PlayerAnimator : MonoBehaviour
 {
-    private readonly int OnGround = Animator.StringToHash("OnGround");
-    private readonly int IsRun = Animator.StringToHash("IsRun");
-    private readonly int SpeedY = Animator.StringToHash("SpeedY");
+    private readonly int _onGround = Animator.StringToHash("OnGround");
+    private readonly int _isRun = Animator.StringToHash("IsRun");
+    private readonly int _speedY = Animator.StringToHash("SpeedY");
 
     private Player _player;
     private Animator _animator;
@@ -35,21 +35,21 @@ public class PlayerAnimator : MonoBehaviour
 
     private void Run()
     {
-        _animator.SetBool(IsRun, true);
+        _animator.SetBool(_isRun, true);
     }
 
     private void Stop()
     {
-        _animator.SetBool(IsRun, false);
+        _animator.SetBool(_isRun, false);
     }
 
     private void SpeedYChange(float speedY)
     {
-        _animator.SetFloat(SpeedY, speedY);
+        _animator.SetFloat(_speedY, speedY);
     }
 
     private void OnGroundChange(bool onGround)
     {
-        _animator.SetBool(OnGround, onGround);
+        _animator.SetBool(_onGround, onGround);
     }
 }

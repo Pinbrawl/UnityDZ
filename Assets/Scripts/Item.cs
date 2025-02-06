@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(CircleCollider2D))]
 public class Item : MonoBehaviour
 {
-    [SerializeField] protected CollectEffect _collectEffect;
+    [SerializeField] private CollectEffect _collectEffect;
 
     public virtual void Remove()
     {
