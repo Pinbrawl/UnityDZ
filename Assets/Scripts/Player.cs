@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
     {
         Run();
 
-        if (_inputReader.GetIsJump() && _onGround)
+        if (_inputReader.IsJump() && _onGround)
             Jump();
     }
 
