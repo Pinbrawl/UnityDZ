@@ -9,6 +9,5 @@ public class Item : MonoBehaviour
     public virtual void Remove()
     {
         Instantiate(_collectEffect, transform.position, Quaternion.identity);
-        Destroy(gameObject);
     }
 }

@@ -2,11 +2,11 @@ using System;
 
 public class Coin : Item
 {
-    public event Action<Coin> Removed;
+    public event Action<Coin> Collected;
 
     public override void Remove()
     {
-        Removed?.Invoke(this);
+        Collected?.Invoke(this);
         
         base.Remove();
     }

@@ -24,9 +24,9 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(int damage, Transform point = null, bool ignoreImmortality = false)
     {
-        if (IsImmortality == false || ignoreImmortality == true)
+        if ((IsImmortality == false || ignoreImmortality == true) && damage > 0)
         {
-            _health = Math.Max(0, _health - damage);
+            _health = Mathf.Clamp(_health - damage, 0, _health);
             HealthChanged?.Invoke(_health);
 
             DamageTaked?.Invoke(point);

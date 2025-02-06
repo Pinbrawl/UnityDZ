@@ -6,14 +6,9 @@ public class InputReader : MonoBehaviour
 
     private bool _isJump;
 
-    private KeyCode _jumpKey;
+    private KeyCode _jumpKey = KeyCode.Space;
 
     public float Direction { get; private set; }
-
-    private void Awake()
-    {
-        _jumpKey = KeyCode.Space;
-    }
 
     private void Update()
     {

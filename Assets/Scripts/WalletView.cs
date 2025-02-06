@@ -1,20 +1,20 @@
 using TMPro;
 using UnityEngine;
 
-public class HealthView : MonoBehaviour
+public class WalletView : MonoBehaviour
 {
     [SerializeField] private string _baseStringForPrint;
     [SerializeField] private TextMeshProUGUI _textForCount;
-    [SerializeField] private Health _health;
+    [SerializeField] private Wallet _wallet;
 
     private void OnEnable()
     {
-        _health.HealthChanged += Print;
+        _wallet.CoinChanged += Print;
     }
 
     private void OnDisable()
     {
-        _health.HealthChanged -= Print;
+        _wallet.CoinChanged -= Print;
     }
 
     private void Print(int health)

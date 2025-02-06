@@ -1,19 +1,25 @@
-using TMPro;
+using System;
 using UnityEngine;
 
+[RequireComponent(typeof(ItemPickUper))]
 public class Wallet : MonoBehaviour
 {
-    [SerializeField] private string _baseString;
-    [SerializeField] private TextMeshProUGUI _text;
-    [SerializeField] private ItemPickUper _itemPickUper;
+    private ItemPickUper _itemPickUper;
 
     private int _coins;
+
+    public event Action<int> CoinChanged;
 
     private void Awake()
     {
         _coins = 0;
 
-        PrintCoins();
+        _itemPickUper = GetComponent<ItemPickUper>();
+    }
+
+    private void Start()
+    {
+        CoinChanged?.Invoke(_coins);
     }
 
     private void OnEnable()
@@ -29,11 +35,7 @@ public class Wallet : MonoBehaviour
     public void AddCoin()
     {
         _coins++;
-        PrintCoins();
-    }
 
-    private void PrintCoins()
-    {
-        _text.text = _baseString + " " + _coins;
+        CoinChanged?.Invoke(_coins);
     }
 }

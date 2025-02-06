@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Flipper))]
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed;
@@ -12,38 +11,42 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _secondsForRelax;
     [SerializeField] private List<Transform> _wayPoints;
 
+    private float _speedNow;
+
+    private Flipper _flipper;
+
     public event Action Running;
     public event Action Stopping;
 
+    private void Awake()
+    {
+        _speedNow = 0;
+
+        _flipper = GetComponent<Flipper>();
+    }
+
     private void Start()
     {
-        StartCoroutine(SetWay());
+        StartCoroutine(NextWay());
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        Health health;
-
-        if (collision.gameObject.TryGetComponent<Health>(out health))
+        if (collision.gameObject.TryGetComponent<Health>(out Health health))
             health.TakeDamage(_damage, transform);
     }
 
-    private IEnumerator SetWay()
+    private IEnumerator NextWay()
     {
         var relaxTime = new WaitForSeconds(_secondsForRelax);
+        int pointIndex = 0;
 
-        for(int pointIndex = 0; enabled; pointIndex++)
+        while(enabled)
         {
-            if(pointIndex == _wayPoints.Count)
-                pointIndex = 0;
+            pointIndex = ++pointIndex % _wayPoints.Count;
 
             Transform point = _wayPoints[pointIndex];
-            StartCoroutine(GoToPoint(point));
-
-            while(transform.position.x != point.position.x)
-            {
-                yield return null;
-            }
+            yield return GoToPoint(point);
 
             yield return relaxTime;
         }
@@ -53,28 +56,23 @@ public class Enemy : MonoBehaviour
     {
         Running?.Invoke();
 
-        Flip(point);
-
         bool isEnd = false;
 
         while(isEnd == false)
         {
             float xPosition = Mathf.MoveTowards(transform.position.x, point.position.x, _speed * Time.deltaTime);
+            _speedNow = xPosition - transform.position.x;
             transform.position = new Vector2(xPosition, transform.position.y);
+
+            _flipper.Flip(_speedNow);
 
             isEnd = transform.position.x == point.position.x;
 
             yield return null;
         }
 
-        Stopping?.Invoke();
-    }
+        _speedNow = 0;
 
-    private void Flip(Transform point)
-    {
-        if (point.position.x > transform.position.x)
-            transform.rotation = Quaternion.Euler(transform.rotation.x, 0, transform.rotation.z);
-        else if (point.position.x < transform.position.x)
-            transform.rotation = Quaternion.Euler(transform.rotation.x, 180, transform.rotation.z);
+        Stopping?.Invoke();
     }
 }

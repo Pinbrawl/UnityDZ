@@ -15,12 +15,13 @@ public class CoinSpawner : MonoBehaviour
     {
         Transform randomPoint = _spawnPoints[Random.Range(0, _spawnPoints.Count)];
         Coin coin = Instantiate(_coin, randomPoint);
-        coin.Removed += CoinPickUped;
+        coin.Collected += CoinPickUped;
     }
 
     private void CoinPickUped(Coin coin)
     {
-        coin.Removed -= CoinPickUped;
+        coin.Collected -= CoinPickUped;
+        Destroy(coin.gameObject);
         Spawn();
     }
 }

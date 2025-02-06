@@ -3,15 +3,16 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(InputReader))]
+[RequireComponent(typeof(Health))]
+[RequireComponent(typeof(Flipper))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private Transform _spawnPoint;
-    [SerializeField] private OnGroundChecker _onGroundChecker;
+    [SerializeField] private GroundChecker _onGroundChecker;
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
-    [SerializeField] private float _flipBorder;
     [SerializeField] private float _dropStrength;
     [SerializeField] private float _secondsImmortality;
     [SerializeField] private float _secondsForBlinking;
@@ -24,6 +25,7 @@ public class Player : MonoBehaviour
     private Coroutine _coroutine;
     private InputReader _inputReader;
     private Health _health;
+    private Flipper _flipper;
 
     public event Action Running;
     public event Action Stopping;
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _inputReader = GetComponent<InputReader>();
         _health = GetComponent<Health>();
+        _flipper = GetComponent<Flipper>();
     }
 
     private void OnEnable()
@@ -67,7 +70,6 @@ public class Player : MonoBehaviour
     private void Update()
     {
         ChangeAnimatorParameters();
-        Flip();
     }
 
     public void TakeDamage(Transform point)
@@ -134,19 +136,12 @@ public class Player : MonoBehaviour
     {
         _speedNow = _speed * _inputReader.Direction;
         transform.Translate(transform.right * (_speedNow * Time.deltaTime));
+        _flipper.Flip(_speedNow);
     }
 
     private void Jump()
     {
         _rigidbody2D.velocity = Vector2.up * _jumpForce;
-    }
-
-    private void Flip()
-    {
-        if (_speedNow > _flipBorder)
-            transform.rotation = Quaternion.Euler(transform.rotation.x, 0, transform.rotation.z);
-        else if (_speedNow < _flipBorder)
-            transform.rotation = Quaternion.Euler(transform.rotation.x, 180, transform.rotation.z);
     }
 
     private void Death()

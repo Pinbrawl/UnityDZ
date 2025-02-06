@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class EnemyAnimator : MonoBehaviour
 {
     private readonly int Run = Animator.StringToHash("Run");

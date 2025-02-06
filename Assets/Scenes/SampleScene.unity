@@ -2134,7 +2134,7 @@ GameObject:
   - component: {fileID: 476317638}
   - component: {fileID: 476317636}
   - component: {fileID: 476317637}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnGroundChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2214,7 +2214,7 @@ GameObject:
   - component: {fileID: 553257207}
   - component: {fileID: 553257206}
   m_Layer: 0
-  m_Name: Health
+  m_Name: HealthView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2232,8 +2232,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a57bc82f36e28b4d9da79f61e9feefd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseStringForHealthPrint: 'health:'
-  _textForHealthCount: {fileID: 1678665088}
+  _baseStringForPrint: Health
+  _textForCount: {fileID: 1678665088}
   _health: {fileID: 967716318}
 --- !u!4 &553257207
 Transform:
@@ -2774,8 +2774,10 @@ GameObject:
   - component: {fileID: 967716316}
   - component: {fileID: 967716317}
   - component: {fileID: 967716318}
+  - component: {fileID: 967716321}
   - component: {fileID: 967716319}
   - component: {fileID: 967716315}
+  - component: {fileID: 967716320}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2929,7 +2931,6 @@ MonoBehaviour:
   _onGroundChecker: {fileID: 476317636}
   _speed: 10
   _jumpForce: 15
-  _flipBorder: 0
   _dropStrength: 10
   _secondsImmortality: 1
   _secondsForBlinking: 0.1
@@ -3005,6 +3006,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1680c7620b41d404696d80fb86609f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &967716320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967716309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89ea7993d526e314d92894ed50ff48f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &967716321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967716309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e653f15f29a31b64982a60f2e1d9a5e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemPickUper: {fileID: 0}
 --- !u!1 &1004371992
 GameObject:
   m_ObjectHideFlags: 0
@@ -3175,29 +3201,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1397046474}
-  - component: {fileID: 1397046473}
+  - component: {fileID: 1397046475}
   m_Layer: 0
-  m_Name: Wallet
+  m_Name: WalletView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1397046473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1397046472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e653f15f29a31b64982a60f2e1d9a5e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _baseString: 'Coins:'
-  _text: {fileID: 764693329}
-  _itemPickUper: {fileID: 967716316}
 --- !u!4 &1397046474
 Transform:
   m_ObjectHideFlags: 0
@@ -3213,6 +3224,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1397046475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397046472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a3205deca71c6840a432aaa150acd1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseStringForPrint: Coins
+  _textForCount: {fileID: 764693329}
+  _wallet: {fileID: 967716321}
 --- !u!1 &1401865761
 GameObject:
   m_ObjectHideFlags: 0

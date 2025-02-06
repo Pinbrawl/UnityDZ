@@ -1,5 +1,7 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Player))]
 public class PlayerAnimator : MonoBehaviour
 {
     private readonly int OnGround = Animator.StringToHash("OnGround");
