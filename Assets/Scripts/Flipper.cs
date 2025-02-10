@@ -11,11 +11,15 @@ public class Flipper : MonoBehaviour
 
     public void Flip(float speedNow)
     {
-        int rotateForFlip = 180;
+        int degreesForNotFlip = 0;
+        int degreesForFlip = 180;
+
+        Quaternion rotateForNotFlip = Quaternion.Euler(transform.rotation.x, degreesForNotFlip, transform.rotation.z);
+        Quaternion rotateForFlip = Quaternion.Euler(transform.rotation.x, degreesForFlip, transform.rotation.z);
 
         if (speedNow > _flipBorder)
-            transform.rotation = Quaternion.Euler(transform.rotation.x, 0, transform.rotation.z);
+            transform.rotation = rotateForNotFlip;
         else if (speedNow < _flipBorder)
-            transform.rotation = Quaternion.Euler(transform.rotation.x, rotateForFlip, transform.rotation.z);
+            transform.rotation = rotateForFlip;
     }
 }

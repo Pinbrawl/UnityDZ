@@ -1,31 +1,27 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(InputReader))]
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(Flipper))]
+[RequireComponent(typeof(Mover))]
+[RequireComponent(typeof(Immortalitier))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private GroundChecker _onGroundChecker;
-    [SerializeField] private float _speed;
-    [SerializeField] private float _jumpForce;
     [SerializeField] private float _dropStrength;
-    [SerializeField] private float _secondsImmortality;
-    [SerializeField] private float _secondsForBlinking;
 
-    private float _speedNow;
-    private bool _onGround;
+    private bool _isGrounded;
 
     private Rigidbody2D _rigidbody2D;
-    private SpriteRenderer _spriteRenderer;
     private Coroutine _coroutine;
     private InputReader _inputReader;
     private Health _health;
     private Flipper _flipper;
+    private Mover _mover;
+    private Immortalitier _immortalitier;
 
     public event Action Running;
     public event Action Stopping;
@@ -36,26 +32,27 @@ public class Player : MonoBehaviour
     {
         transform.position = _spawnPoint.position;
 
-        _onGround = false;
+        _isGrounded = false;
 
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
         _inputReader = GetComponent<InputReader>();
         _health = GetComponent<Health>();
         _flipper = GetComponent<Flipper>();
+        _mover = GetComponent<Mover>();
+        _immortalitier = GetComponent<Immortalitier>();
     }
 
     private void OnEnable()
     {
         _onGroundChecker.OnGroundChanged += OnGroundChange;
-        _health.DamageTaked += TakeDamage;
+        _health.DamageTaked += OnDamageTaked;
         _health.Dead += Death;
     }
 
     private void OnDisable()
     {
         _onGroundChecker.OnGroundChanged -= OnGroundChange;
-        _health.DamageTaked -= TakeDamage;
+        _health.DamageTaked -= OnDamageTaked;
         _health.Dead -= Death;
     }
 
@@ -63,8 +60,8 @@ public class Player : MonoBehaviour
     {
         Run();
 
-        if (_inputReader.IsJump() && _onGround)
-            Jump();
+        if (_inputReader.IsJump() && _isGrounded)
+            _mover.Jump();
     }
 
     private void Update()
@@ -72,53 +69,25 @@ public class Player : MonoBehaviour
         ChangeAnimatorParameters();
     }
 
-    public void TakeDamage(Transform point)
+    public void OnDamageTaked(Transform point)
     {
         if (_coroutine != null)
             StopCoroutine(_coroutine);
 
-        _coroutine = StartCoroutine(DoImmortality());
+        _coroutine = StartCoroutine(_immortalitier.DoImmortality());
 
         if (point != null)
-            Drop(point);
+            Push(point);
     }
 
-    private IEnumerator DoImmortality()
-    {
-        var blinkingTime = new WaitForSeconds(_secondsForBlinking);
-        float timeImmortality = _secondsImmortality;
-        _health.IsImmortality = true;
-
-        while (timeImmortality > 0)
-        {
-            _spriteRenderer.enabled = !_spriteRenderer.enabled;
-
-            if (timeImmortality <= _secondsForBlinking)
-            {
-                yield return new WaitForSeconds(timeImmortality);
-
-                timeImmortality = 0;
-            }
-            else
-            {
-                yield return blinkingTime;
-
-                timeImmortality -= _secondsForBlinking;
-            }
-        }
-
-        _health.IsImmortality = false;
-        _spriteRenderer.enabled = true;
-    }
-
-    private void Drop(Transform point)
+    private void Push(Transform point)
     {
         _rigidbody2D.velocity = (transform.position - point.position).normalized * _dropStrength;
     }
 
     private void ChangeAnimatorParameters()
     {
-        if (_speedNow != 0)
+        if (_mover.SpeedNow != 0)
             Running?.Invoke();
         else
             Stopping?.Invoke();
@@ -128,20 +97,14 @@ public class Player : MonoBehaviour
 
     private void OnGroundChange(bool onGround)
     {
-        _onGround = onGround;
-        OnGroundChanged?.Invoke(_onGround);
+        _isGrounded = onGround;
+        OnGroundChanged?.Invoke(_isGrounded);
     }
 
     private void Run()
     {
-        _speedNow = _speed * _inputReader.Direction;
-        transform.Translate(transform.right * (_speedNow * Time.deltaTime));
-        _flipper.Flip(_speedNow);
-    }
-
-    private void Jump()
-    {
-        _rigidbody2D.velocity = Vector2.up * _jumpForce;
+        _mover.Run(_inputReader.Direction);
+        _flipper.Flip(_mover.SpeedNow);
     }
 
     private void Death()

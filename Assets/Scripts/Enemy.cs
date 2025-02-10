@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.TryGetComponent<Health>(out Health health))
+        if (collision.gameObject.TryGetComponent(out Health health))
             health.TakeDamage(_damage, transform);
     }
 

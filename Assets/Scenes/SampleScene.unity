@@ -2776,8 +2776,10 @@ GameObject:
   - component: {fileID: 967716318}
   - component: {fileID: 967716321}
   - component: {fileID: 967716319}
-  - component: {fileID: 967716315}
   - component: {fileID: 967716320}
+  - component: {fileID: 967716322}
+  - component: {fileID: 967716323}
+  - component: {fileID: 967716315}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2929,11 +2931,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnPoint: {fileID: 82292972}
   _onGroundChecker: {fileID: 476317636}
-  _speed: 10
-  _jumpForce: 15
   _dropStrength: 10
-  _secondsImmortality: 1
-  _secondsForBlinking: 0.1
 --- !u!95 &967716315
 Animator:
   serializedVersion: 5
@@ -3030,6 +3028,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e653f15f29a31b64982a60f2e1d9a5e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &967716322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967716309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33c57896eb9dbb54da0c28ff4fd080f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 10
+  _jumpForce: 15
+  SpeedNow: 0
+--- !u!114 &967716323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967716309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aed3f845d9760de4c8819dd9188afd51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _secondsImmortality: 1
+  _secondsForBlinking: 0.1
 --- !u!1 &1004371992
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ public class ItemPickUper : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent<Item>(out Item item))
+        if (collision.gameObject.TryGetComponent(out Item item))
         {
             if (item.TryGetComponent<Coin>(out _))
                 PickUpCoin?.Invoke();
