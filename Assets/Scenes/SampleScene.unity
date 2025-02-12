@@ -2931,6 +2931,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnPoint: {fileID: 82292972}
   _onGroundChecker: {fileID: 476317636}
+  _wallet: {fileID: 967716321}
   _dropStrength: 10
 --- !u!95 &967716315
 Animator:
@@ -8429,6 +8430,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9014601398224094431, guid: 4170dad06e039e740bf558d897c9915c, type: 3}
+      propertyPath: _wayPoints.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014601398224094431, guid: 4170dad06e039e740bf558d897c9915c, type: 3}
+      propertyPath: _wayPoints.Array.data[0]
+      value: 
+      objectReference: {fileID: 756801705}
+    - target: {fileID: 9014601398224094431, guid: 4170dad06e039e740bf558d897c9915c, type: 3}
+      propertyPath: _wayPoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 1861975896}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8494,6 +8507,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9014601398224094431, guid: 4170dad06e039e740bf558d897c9915c, type: 3}
+      propertyPath: _wayPoints.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014601398224094431, guid: 4170dad06e039e740bf558d897c9915c, type: 3}
+      propertyPath: _wayPoints.Array.data[0]
+      value: 
+      objectReference: {fileID: 1418663690}
+    - target: {fileID: 9014601398224094431, guid: 4170dad06e039e740bf558d897c9915c, type: 3}
+      propertyPath: _wayPoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 2036400410}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

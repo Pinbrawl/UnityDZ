@@ -3,45 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Flipper))]
-public class Enemy : MonoBehaviour
+public class EnemyMover : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private int _damage;
     [SerializeField] private float _secondsForRelax;
     [SerializeField] private List<Transform> _wayPoints;
 
-    private float _speedNow;
-
-    private Flipper _flipper;
+    public float SpeedNow;
 
     public event Action Running;
     public event Action Stopping;
 
     private void Awake()
     {
-        _speedNow = 0;
-
-        _flipper = GetComponent<Flipper>();
+        SpeedNow = 0;
     }
 
     private void Start()
     {
-        StartCoroutine(GetNextWay());
+        StartCoroutine(Move());
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.gameObject.TryGetComponent(out Health health))
-            health.TakeDamage(_damage, transform);
-    }
-
-    private IEnumerator GetNextWay()
+    private IEnumerator Move()
     {
         var relaxTime = new WaitForSeconds(_secondsForRelax);
         int pointIndex = 0;
 
-        while(enabled)
+        while (enabled)
         {
             pointIndex = ++pointIndex % _wayPoints.Count;
 
@@ -58,20 +46,18 @@ public class Enemy : MonoBehaviour
 
         bool isEnd = false;
 
-        while(isEnd == false)
+        while (isEnd == false)
         {
             float xPosition = Mathf.MoveTowards(transform.position.x, point.position.x, _speed * Time.deltaTime);
-            _speedNow = xPosition - transform.position.x;
+            SpeedNow = xPosition - transform.position.x;
             transform.position = new Vector2(xPosition, transform.position.y);
-
-            _flipper.Flip(_speedNow);
 
             isEnd = transform.position.x == point.position.x;
 
             yield return null;
         }
 
-        _speedNow = 0;
+        SpeedNow = 0;
 
         Stopping?.Invoke();
     }

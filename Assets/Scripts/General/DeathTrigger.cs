@@ -6,7 +6,7 @@ public class DeathTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out Health health))
-            health.TakeDamage(_damage, null, true);
+        if (collision.gameObject.TryGetComponent(out PlayerCondition playerCondition))
+            playerCondition.TakeDamage(_damage, null, true);
     }
 }

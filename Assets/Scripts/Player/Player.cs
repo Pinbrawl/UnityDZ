@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private GroundChecker _onGroundChecker;
+    [SerializeField] private Wallet _wallet;
     [SerializeField] private float _dropStrength;
 
     private bool _isGrounded;
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour
     private Flipper _flipper;
     private Mover _mover;
     private Immortalitier _immortalitier;
+    private ItemPickUper _itemPickUper;
 
     public event Action Running;
     public event Action Stopping;
@@ -40,20 +42,21 @@ public class Player : MonoBehaviour
         _flipper = GetComponent<Flipper>();
         _mover = GetComponent<Mover>();
         _immortalitier = GetComponent<Immortalitier>();
+        _itemPickUper = GetComponent<ItemPickUper>();
     }
 
     private void OnEnable()
     {
         _onGroundChecker.OnGroundChanged += OnGroundChange;
-        _health.DamageTaked += OnDamageTaked;
         _health.Dead += Death;
+        _itemPickUper.PickUpCoin += CoinPickUped;
     }
 
     private void OnDisable()
     {
         _onGroundChecker.OnGroundChanged -= OnGroundChange;
-        _health.DamageTaked -= OnDamageTaked;
         _health.Dead -= Death;
+        _itemPickUper.PickUpCoin -= CoinPickUped;
     }
 
     private void FixedUpdate()
@@ -67,6 +70,11 @@ public class Player : MonoBehaviour
     private void Update()
     {
         ChangeAnimatorParameters();
+    }
+
+    private void CoinPickUped()
+    {
+        _wallet.AddCoin();
     }
 
     public void OnDamageTaked(Transform point)
@@ -95,9 +103,9 @@ public class Player : MonoBehaviour
         SpeedYChanged?.Invoke(_rigidbody2D.velocity.y);
     }
 
-    private void OnGroundChange(bool onGround)
+    private void OnGroundChange(bool isGrounded)
     {
-        _isGrounded = onGround;
+        _isGrounded = isGrounded;
         OnGroundChanged?.Invoke(_isGrounded);
     }
 

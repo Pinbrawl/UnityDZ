@@ -1,29 +1,30 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(EnemyMover))]
 public class EnemyAnimator : MonoBehaviour
 {
     private readonly int _run = Animator.StringToHash("Run");
 
-    private Enemy _enemy;
+    private EnemyMover _enemyMover;
     private Animator _animator;
 
     private void Awake()
     {
-        _enemy = GetComponent<Enemy>();
+        _enemyMover = GetComponent<EnemyMover>();
         _animator = GetComponent<Animator>();
     }
 
     private void OnEnable()
     {
-        _enemy.Running += RunAnimationStart;
-        _enemy.Stopping += RunAnimationStop;
+        _enemyMover.Running += RunAnimationStart;
+        _enemyMover.Stopping += RunAnimationStop;
     }
 
     private void OnDisable()
     {
-        _enemy.Running -= RunAnimationStart;
-        _enemy.Stopping -= RunAnimationStop;
+        _enemyMover.Running -= RunAnimationStart;
+        _enemyMover.Stopping -= RunAnimationStop;
     }
 
     private void RunAnimationStart()
