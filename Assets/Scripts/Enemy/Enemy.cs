@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour
     {
         _enemyHealth.Dead += Die;
         _enemyHealth.DamageTaked += DamageTaked;
-        _attackTrigger.IsTriggered += GoToAttack;
+        _attackTrigger.Triggered += GoToAttack;
     }
 
     private void OnDisable()

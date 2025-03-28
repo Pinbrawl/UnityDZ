@@ -11,7 +11,7 @@ public class DamagerRotator : MonoBehaviour
     private Coroutine _coroutine;
     private WaitForSeconds _waitTime;
 
-    public event Action<bool> IsAttack;
+    public event Action<bool> Attacked;
 
     private void Awake()
     {
@@ -34,12 +34,12 @@ public class DamagerRotator : MonoBehaviour
 
     private IEnumerator Attack()
     {
-        IsAttack?.Invoke(true);
+        Attacked?.Invoke(true);
         _damager.gameObject.SetActive(true);
 
         yield return _waitTime;
 
-        IsAttack?.Invoke(false);
+        Attacked?.Invoke(false);
         _damager.gameObject.SetActive(false);
 
         _coroutine = null;

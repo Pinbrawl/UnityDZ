@@ -5,6 +5,7 @@ public class Flipper : MonoBehaviour
     private float _flipBorder;
     private int _degreesForNotFlip;
     private int _degreesForFlip;
+
     private Quaternion _rotateForNotFlip;
     private Quaternion _rotateForFlip;
 

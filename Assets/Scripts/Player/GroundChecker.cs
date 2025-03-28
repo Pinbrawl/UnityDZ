@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class GroundChecker : MonoBehaviour
 {
+    private int _groundCount;
+
     private LayerMask _groundLayer;
 
-    public event Action<bool> OnGroundChanged;
+    public event Action<bool> GroundChanged;
 
     private void Awake()
     {
@@ -15,11 +17,20 @@ public class GroundChecker : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == _groundLayer)
-            OnGroundChanged?.Invoke(true);
+        {
+            GroundChanged?.Invoke(true);
+            _groundCount++;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        OnGroundChanged?.Invoke(false);
+        if (collider.gameObject.layer == _groundLayer)
+        {
+            _groundCount--;
+
+            if (_groundCount < 1)
+                GroundChanged?.Invoke(false);
+        }
     }
 }

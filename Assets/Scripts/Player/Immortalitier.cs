@@ -1,19 +1,19 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(PlayerCondition))]
 public class Immortalitier : MonoBehaviour
 {
     [SerializeField] private float _secondsImmortality;
     [SerializeField] private float _secondsForBlinking;
 
-    private PlayerCondition _playerCondition;
     private SpriteRenderer _spriteRenderer;
+
+    public event Action<bool> ImmortalityChanged;
 
     private void Awake()
     {
-        _playerCondition = GetComponent<PlayerCondition>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -21,7 +21,8 @@ public class Immortalitier : MonoBehaviour
     {
         var blinkingTime = new WaitForSeconds(_secondsForBlinking);
         float timeImmortality = _secondsImmortality;
-        _playerCondition.IsImmortality = true;
+
+        ImmortalityChanged?.Invoke(true);
 
         while (timeImmortality > 0)
         {
@@ -41,7 +42,8 @@ public class Immortalitier : MonoBehaviour
             }
         }
 
-        _playerCondition.IsImmortality = false;
+        ImmortalityChanged?.Invoke(false);
+
         _spriteRenderer.enabled = true;
     }
 }

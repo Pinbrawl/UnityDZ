@@ -4,25 +4,42 @@ using UnityEngine;
 [RequireComponent(typeof(Player))]
 public class PlayerCondition : MonoBehaviour
 {
-    public bool IsImmortality;
+    [SerializeField] private Immortalitier _immortalitier;
+
+    private bool _isImmortality;
 
     private Health _health;
     private Player _player;
 
     private void Awake()
     {
-        IsImmortality = false;
+        _isImmortality = false;
 
         _health = GetComponent<Health>();
         _player = GetComponent<Player>();
     }
 
+    private void OnEnable()
+    {
+        _immortalitier.ImmortalityChanged += ImmortalityChange;
+    }
+
+    private void OnDisable()
+    {
+        _immortalitier.ImmortalityChanged -= ImmortalityChange;
+    }
+
     public void TakeDamage(int damage, Transform point = null, bool ignoreImmortality = false)
     {
-        if ((IsImmortality == false || ignoreImmortality == true) && damage > 0)
+        if ((_isImmortality == false || ignoreImmortality == true) && damage > 0)
         {
             _health.TakeDamage(damage);
             _player.OnDamageTaked(point);
         }
+    }
+
+    private void ImmortalityChange(bool isImmortality)
+    {
+        _isImmortality = isImmortality;
     }
 }

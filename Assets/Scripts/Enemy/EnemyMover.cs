@@ -30,6 +30,23 @@ public class EnemyMover : MonoBehaviour
         StartCoroutine(Move());
     }
 
+    public void Push(Transform point)
+    {
+        _rigidbody2D.velocity = (transform.position - point.position).normalized * _dropStrength;
+    }
+
+    public void StartGoToAttack(Transform point)
+    {
+        StopAllCoroutines();
+        StartCoroutine(GoToAttack(point));
+    }
+
+    public void StopGoToAttack()
+    {
+        StopAllCoroutines();
+        StartCoroutine(Move());
+    }
+
     private IEnumerator Move()
     {
         var relaxTime = new WaitForSeconds(_secondsForRelax);
@@ -84,22 +101,5 @@ public class EnemyMover : MonoBehaviour
         SpeedNow = 0;
 
         Stopping?.Invoke();
-    }
-
-    public void Push(Transform point)
-    {
-        _rigidbody2D.velocity = (transform.position - point.position).normalized * _dropStrength;
-    }
-
-    public void StartGoToAttack(Transform point)
-    {
-        StopAllCoroutines();
-        StartCoroutine(GoToAttack(point));
-    }
-
-    public void StopGoToAttack()
-    {
-        StopAllCoroutines();
-        StartCoroutine(Move());
     }
 }

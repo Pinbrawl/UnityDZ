@@ -10,10 +10,9 @@ public class ItemPickUper : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent(out Item item))
         {
-            if (item.TryGetComponent<Coin>(out _))
+            if (item is Coin)
                 PickUpCoin?.Invoke();
-
-            if(item.TryGetComponent<HealBox>(out _))
+            else if(item is HealBox)
                 PickUpHealBox?.Invoke();
 
             item.Remove();

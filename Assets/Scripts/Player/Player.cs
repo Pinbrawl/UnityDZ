@@ -47,16 +47,16 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        _onGroundChecker.OnGroundChanged += OnGroundChange;
-        _health.Dead += Death;
+        _onGroundChecker.GroundChanged += OnGroundChange;
+        _health.Dead += Die;
         _itemPickUper.PickUpCoin += CoinPickUped;
         _itemPickUper.PickUpHealBox += HealBoxPickUped;
     }
 
     private void OnDisable()
     {
-        _onGroundChecker.OnGroundChanged -= OnGroundChange;
-        _health.Dead -= Death;
+        _onGroundChecker.GroundChanged -= OnGroundChange;
+        _health.Dead -= Die;
         _itemPickUper.PickUpCoin -= CoinPickUped;
         _itemPickUper.PickUpHealBox -= HealBoxPickUped;
     }
@@ -74,16 +74,6 @@ public class Player : MonoBehaviour
         ChangeAnimatorParameters();
     }
 
-    private void CoinPickUped()
-    {
-        _wallet.AddCoin();
-    }
-
-    private void HealBoxPickUped()
-    {
-        _health.Heal();
-    }
-
     public void OnDamageTaked(Transform point)
     {
         if (_coroutine != null)
@@ -93,6 +83,16 @@ public class Player : MonoBehaviour
 
         if (point != null)
             Push(point);
+    }
+
+    private void CoinPickUped()
+    {
+        _wallet.AddCoin();
+    }
+
+    private void HealBoxPickUped()
+    {
+        _health.AddHealth();
     }
 
     private void Push(Transform point)
@@ -122,7 +122,7 @@ public class Player : MonoBehaviour
         _flipper.Flip(_mover.SpeedNow);
     }
 
-    private void Death()
+    private void Die()
     {
         _rigidbody2D.velocity = Vector2.zero;
         transform.position = _spawnPoint.position;

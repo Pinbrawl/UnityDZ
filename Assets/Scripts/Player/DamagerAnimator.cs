@@ -17,12 +17,12 @@ public class DamagerAnimator : MonoBehaviour
 
     private void OnEnable()
     {
-        _damagerRotator.IsAttack += Attack;
+        _damagerRotator.Attacked += Attack;
     }
 
     private void OnDisable()
     {
-        _damagerRotator.IsAttack -= Attack;
+        _damagerRotator.Attacked -= Attack;
     }
 
     private void Attack(bool isAttack)
