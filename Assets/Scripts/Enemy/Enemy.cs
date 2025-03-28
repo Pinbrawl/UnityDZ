@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyHealth))]
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private AttackTrigger _attackTrigger;
+
     private Flipper _flipper;
     private EnemyMover _enemyMover;
     private EnemyHealth _enemyHealth;
@@ -19,11 +21,14 @@ public class Enemy : MonoBehaviour
     private void OnEnable()
     {
         _enemyHealth.Dead += Die;
+        _enemyHealth.DamageTaked += DamageTaked;
+        _attackTrigger.IsTriggered += GoToAttack;
     }
 
     private void OnDisable()
     {
         _enemyHealth.Dead -= Die;
+        _enemyHealth.DamageTaked -= DamageTaked;
     }
 
     private void Update()
@@ -34,5 +39,18 @@ public class Enemy : MonoBehaviour
     private void Die()
     {
         Destroy(gameObject);
+    }
+
+    private void DamageTaked(Transform point)
+    {
+        _enemyMover.Push(point);
+    }
+
+    private void GoToAttack(bool isTriggered)
+    {
+        if (isTriggered)
+            _enemyMover.StartGoToAttack(_attackTrigger.transform);
+        else
+            _enemyMover.StopGoToAttack();
     }
 }

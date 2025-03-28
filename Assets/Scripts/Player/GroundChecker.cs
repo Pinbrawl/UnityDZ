@@ -3,23 +3,23 @@ using UnityEngine;
 
 public class GroundChecker : MonoBehaviour
 {
-    private bool _isGrounded;
+    private LayerMask _groundLayer;
 
     public event Action<bool> OnGroundChanged;
 
     private void Awake()
     {
-        _isGrounded = false;
+        _groundLayer = LayerMask.NameToLayer("Platform");
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        _isGrounded = true;
+        if (collision.gameObject.layer == _groundLayer)
+            OnGroundChanged?.Invoke(true);
     }
 
-    private void Update()
+    private void OnTriggerExit2D(Collider2D collider)
     {
-        OnGroundChanged?.Invoke(_isGrounded);
-        _isGrounded = false;
+        OnGroundChanged?.Invoke(false);
     }
 }

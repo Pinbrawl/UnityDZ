@@ -50,6 +50,7 @@ public class Player : MonoBehaviour
         _onGroundChecker.OnGroundChanged += OnGroundChange;
         _health.Dead += Death;
         _itemPickUper.PickUpCoin += CoinPickUped;
+        _itemPickUper.PickUpHealBox += HealBoxPickUped;
     }
 
     private void OnDisable()
@@ -57,6 +58,7 @@ public class Player : MonoBehaviour
         _onGroundChecker.OnGroundChanged -= OnGroundChange;
         _health.Dead -= Death;
         _itemPickUper.PickUpCoin -= CoinPickUped;
+        _itemPickUper.PickUpHealBox -= HealBoxPickUped;
     }
 
     private void FixedUpdate()
@@ -75,6 +77,11 @@ public class Player : MonoBehaviour
     private void CoinPickUped()
     {
         _wallet.AddCoin();
+    }
+
+    private void HealBoxPickUped()
+    {
+        _health.Heal();
     }
 
     public void OnDamageTaked(Transform point)

@@ -1,28 +1,28 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Damager))]
+[RequireComponent(typeof(DamagerRotator))]
 [RequireComponent(typeof(Animator))]
 public class DamagerAnimator : MonoBehaviour
 {
     private readonly int _isAttack = Animator.StringToHash("IsAttack");
 
-    private Damager _damager;
+    private DamagerRotator _damagerRotator;
     private Animator _animator;
 
     private void Awake()
     {
-        _damager = GetComponent<Damager>();
+        _damagerRotator = GetComponent<DamagerRotator>();
         _animator = GetComponent<Animator>();
     }
 
     private void OnEnable()
     {
-        _damager.IsAttack += Attack;
+        _damagerRotator.IsAttack += Attack;
     }
 
     private void OnDisable()
     {
-        _damager.IsAttack -= Attack;
+        _damagerRotator.IsAttack -= Attack;
     }
 
     private void Attack(bool isAttack)
