@@ -7,6 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(Flipper))]
 [RequireComponent(typeof(Mover))]
 [RequireComponent(typeof(Immortalitier))]
+[RequireComponent(typeof(PlayerAnimator))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private Transform _spawnPoint;
@@ -24,11 +25,7 @@ public class Player : MonoBehaviour
     private Mover _mover;
     private Immortalitier _immortalitier;
     private ItemPickUper _itemPickUper;
-
-    public event Action Running;
-    public event Action Stopping;
-    public event Action<bool> OnGroundChanged;
-    public event Action<float> SpeedYChanged;
+    private PlayerAnimator _playerAnimator;
 
     private void Awake()
     {
@@ -43,6 +40,7 @@ public class Player : MonoBehaviour
         _mover = GetComponent<Mover>();
         _immortalitier = GetComponent<Immortalitier>();
         _itemPickUper = GetComponent<ItemPickUper>();
+        _playerAnimator = GetComponent<PlayerAnimator>();
     }
 
     private void OnEnable()
@@ -103,17 +101,17 @@ public class Player : MonoBehaviour
     private void ChangeAnimatorParameters()
     {
         if (_mover.SpeedNow != 0)
-            Running?.Invoke();
+            _playerAnimator.Run();
         else
-            Stopping?.Invoke();
+            _playerAnimator.Stop();
 
-        SpeedYChanged?.Invoke(_rigidbody2D.velocity.y);
+        _playerAnimator.SpeedYChange(_rigidbody2D.velocity.y);
     }
 
     private void OnGroundChange(bool isGrounded)
     {
         _isGrounded = isGrounded;
-        OnGroundChanged?.Invoke(_isGrounded);
+        _playerAnimator.OnGroundChange(_isGrounded);
     }
 
     private void Run()

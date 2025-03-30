@@ -1,9 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(EnemyAnimator))]
 public class EnemyMover : MonoBehaviour
 {
     [SerializeField] private float _speed;
@@ -11,18 +11,17 @@ public class EnemyMover : MonoBehaviour
     [SerializeField] private float _dropStrength;
     [SerializeField] private List<Transform> _wayPoints;
 
-    public float SpeedNow;
-
     private Rigidbody2D _rigidbody2D;
+    private EnemyAnimator _enemyAnimator;
 
-    public event Action Running;
-    public event Action Stopping;
+    public float CurrentSpeed { get; private set; }
 
     private void Awake()
     {
-        SpeedNow = 0;
+        CurrentSpeed = 0;
 
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _enemyAnimator = GetComponent<EnemyAnimator>();
     }
 
     private void Start()
@@ -65,14 +64,14 @@ public class EnemyMover : MonoBehaviour
 
     private IEnumerator GoToPoint(Transform point)
     {
-        Running?.Invoke();
+        _enemyAnimator.RunAnimationStart();
 
         bool isEnd = false;
 
         while (isEnd == false)
         {
             float xPosition = Mathf.MoveTowards(transform.position.x, point.position.x, _speed * Time.deltaTime);
-            SpeedNow = xPosition - transform.position.x;
+            CurrentSpeed = xPosition - transform.position.x;
             transform.position = new Vector2(xPosition, transform.position.y);
 
             isEnd = transform.position.x == point.position.x;
@@ -80,26 +79,26 @@ public class EnemyMover : MonoBehaviour
             yield return null;
         }
 
-        SpeedNow = 0;
+        CurrentSpeed = 0;
 
-        Stopping?.Invoke();
+        _enemyAnimator.RunAnimationStop();
     }
 
     private IEnumerator GoToAttack(Transform point)
     {
-        Running?.Invoke();
+        _enemyAnimator.RunAnimationStart();
 
         while (enabled)
         {
             float xPosition = Mathf.MoveTowards(transform.position.x, point.position.x, _speed * Time.deltaTime);
-            SpeedNow = xPosition - transform.position.x;
+            CurrentSpeed = xPosition - transform.position.x;
             transform.position = new Vector2(xPosition, transform.position.y);
 
             yield return null;
         }
 
-        SpeedNow = 0;
+        CurrentSpeed = 0;
 
-        Stopping?.Invoke();
+        _enemyAnimator.RunAnimationStop();
     }
 }

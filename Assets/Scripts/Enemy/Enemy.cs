@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        _flipper.Flip(_enemyMover.SpeedNow);
+        _flipper.Flip(_enemyMover.CurrentSpeed);
     }
 
     private void Die()

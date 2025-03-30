@@ -1,8 +1,8 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
-public class DamagerRotator : MonoBehaviour
+[RequireComponent(typeof(DamagerAnimator))]
+public class DamagerManager : MonoBehaviour
 {
     [SerializeField] private InputReader _inputReader;
     [SerializeField] private float _attackTime;
@@ -10,14 +10,14 @@ public class DamagerRotator : MonoBehaviour
 
     private Coroutine _coroutine;
     private WaitForSeconds _waitTime;
-
-    public event Action<bool> Attacked;
+    private DamagerAnimator _damagerAnimator;
 
     private void Awake()
     {
         _damager.gameObject.SetActive(false);
 
         _waitTime = new WaitForSeconds(_attackTime);
+        _damagerAnimator = GetComponent<DamagerAnimator>();
     }
 
     private void FixedUpdate()
@@ -34,12 +34,12 @@ public class DamagerRotator : MonoBehaviour
 
     private IEnumerator Attack()
     {
-        Attacked?.Invoke(true);
+        _damagerAnimator.Attack(true);
         _damager.gameObject.SetActive(true);
 
         yield return _waitTime;
 
-        Attacked?.Invoke(false);
+        _damagerAnimator.Attack(false);
         _damager.gameObject.SetActive(false);
 
         _coroutine = null;
