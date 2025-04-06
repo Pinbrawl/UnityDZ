@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(DamagerAnimator))]
-public class DamagerManager : MonoBehaviour
+public class DamagerCondition : MonoBehaviour
 {
     [SerializeField] private InputReader _inputReader;
     [SerializeField] private float _attackTime;

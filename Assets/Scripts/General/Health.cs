@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private int _maxCount;
-    [SerializeField] private int _count;
+    [SerializeField] protected int _maxCount;
+    [SerializeField] protected int _count;
     [SerializeField] private int _healCount;
 
     public event Action<int> Changed;
@@ -30,7 +30,7 @@ public class Health : MonoBehaviour
         Changed?.Invoke(_count);
     }
 
-    private void Die()
+    protected virtual void Die()
     {
         Dead?.Invoke();
 
