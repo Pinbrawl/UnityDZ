@@ -38,4 +38,9 @@ public class Health : MonoBehaviour
 
         Changed?.Invoke(_count, _maxCount);
     }
+
+    protected void Change()
+    {
+        Changed?.Invoke(_count, _maxCount);
+    }
 }

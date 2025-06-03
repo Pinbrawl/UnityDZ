@@ -14,6 +14,8 @@ public class EnemyHealth : Health
 
         if (_count == 0)
             Die();
+
+        Change();
     }
 
     protected override void Die()
