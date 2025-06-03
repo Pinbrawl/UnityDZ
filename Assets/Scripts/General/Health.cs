@@ -30,6 +30,12 @@ public class Health : MonoBehaviour
         Changed?.Invoke(_count, _maxCount);
     }
 
+    public void AddHealth(int count)
+    {
+        _count = Mathf.Clamp(_count + count, 0, _maxCount);
+        Changed?.Invoke(_count, _maxCount);
+    }
+
     protected virtual void Die()
     {
         Dead?.Invoke();

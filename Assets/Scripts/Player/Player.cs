@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private GroundChecker _onGroundChecker;
     [SerializeField] private Wallet _wallet;
+    [SerializeField] private ItemPickUper _itemPickUper;
     [SerializeField] private float _dropStrength;
 
     private bool _isGrounded;
@@ -24,7 +25,6 @@ public class Player : MonoBehaviour
     private Flipper _flipper;
     private Mover _mover;
     private Immortalitier _immortalitier;
-    private ItemPickUper _itemPickUper;
     private PlayerAnimator _playerAnimator;
 
     private void Awake()
@@ -39,7 +39,6 @@ public class Player : MonoBehaviour
         _flipper = GetComponent<Flipper>();
         _mover = GetComponent<Mover>();
         _immortalitier = GetComponent<Immortalitier>();
-        _itemPickUper = GetComponent<ItemPickUper>();
         _playerAnimator = GetComponent<PlayerAnimator>();
     }
 
